@@ -8,17 +8,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlightControlWeb.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+
     public class ServerController : ControllerBase
     {
+        
         private IFlightManager flightManager;
 
         public ServerController(IFlightManager manager)
         {
             flightManager = manager;
         }
-        // GET: api/Server
+        
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -27,15 +29,16 @@ namespace FlightControlWeb.Controllers
 
         // GET: api/Server/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Server Get(int id)
         {
-            return "value";
+            return new Server { ServerId = id, ServerURL = "cds" };
+            
         }
 
-        // POST: api/Server
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(Server server)
         {
+            flightManager.AddServer(server);
         }
 
         // PUT: api/Server/5

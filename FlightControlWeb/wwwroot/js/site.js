@@ -1,4 +1,36 @@
-﻿require([
+﻿
+
+function addServer() {
+    const serverURL = document.getElementById("serverId");
+    let myServer = {
+        ServerId: 21,
+        ServerURL: serverURL.value.trim()
+    };
+    fetch('api/server', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(myServer)
+    })
+        .then(response => response.json())
+        .then(() => {
+        })
+        .catch(error => console.error('Unable to add item.', error));
+
+
+
+}
+
+
+
+
+
+
+
+
+require([
     "esri/Map",
     "esri/views/MapView",
     "esri/Graphic",

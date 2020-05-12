@@ -13,6 +13,7 @@ namespace FlightControlWeb.Controllers
     [ApiController]
     public class FlightPlanController : ControllerBase
     {
+        
         private IFlightManager flightManager;
         private IMemoryCache memoryCache;
 
@@ -21,7 +22,7 @@ namespace FlightControlWeb.Controllers
             flightManager = manager;
             memoryCache = cache;
         }
-
+        /*
         // GET: api/FlightPlan
         [HttpGet]
         public IEnumerable<string> Get()
@@ -35,7 +36,7 @@ namespace FlightControlWeb.Controllers
         {
             return "value";
         }
-
+        */
         // POST: api/FlightPlan
         [HttpPost]
         public void Post([FromBody] string value)
@@ -53,5 +54,6 @@ namespace FlightControlWeb.Controllers
         public void Delete(int id)
         {
         }
+        
     }
 }
