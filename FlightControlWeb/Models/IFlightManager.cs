@@ -8,5 +8,6 @@ namespace FlightControlWeb.Models
     public interface IFlightManager
     {
         Server GetServer(int id);
+        void AddServer(Server server);
     }
 }

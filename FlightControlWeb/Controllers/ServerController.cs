@@ -34,8 +34,9 @@ namespace FlightControlWeb.Controllers
 
         // POST: api/Server
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(Server server)
         {
+            flightManager.AddServer(server);
         }
 
         // PUT: api/Server/5

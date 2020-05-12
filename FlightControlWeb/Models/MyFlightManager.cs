@@ -12,5 +12,10 @@ namespace FlightControlWeb.Models
         {
             return servers.Find(item => item.ServerId == id);
         }
+        public void AddServer(Server server)
+        {
+            servers.Add(server);
+        }
+            
     }
 }

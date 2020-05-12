@@ -1,4 +1,31 @@
-﻿require([
+﻿
+
+function addServer() {
+    const serverURL = document.getElementById("serverId");
+    let myServer = {
+        ServerId: 21,
+        ServerURL: serverURL.value.trim()
+    };
+    fetch('api/Server', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(myServer)
+    })
+    serverURL.value = '';
+
+
+}
+
+
+
+
+
+
+
+require([
     "esri/Map",
     "esri/views/MapView",
     "esri/Graphic",
