@@ -7,5 +7,10 @@ namespace FlightControlWeb.Models
 {
     public class MyFlightManager : IFlightManager
     {
+        List<Server> servers = new List<Server>();
+        public Server GetServer(int id)
+        {
+            return servers.Find(item => item.ServerId == id);
+        }
     }
 }
