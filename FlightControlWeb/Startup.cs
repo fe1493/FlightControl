@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
 
 namespace FlightControlWeb
 {
@@ -30,7 +32,11 @@ namespace FlightControlWeb
 
             services.AddSingleton<IFlightManager, MyFlightManager>();
 
+
             services.AddControllers();
+            
+            services.AddRouting();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,16 +48,19 @@ namespace FlightControlWeb
             }
             app.UseStaticFiles();
 
+            app.UseDefaultFiles();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
         }
     }
 }

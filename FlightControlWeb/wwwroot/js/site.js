@@ -6,7 +6,7 @@ function addServer() {
         ServerId: 21,
         ServerURL: serverURL.value.trim()
     };
-    fetch('api/Server', {
+    fetch('api/server', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -14,10 +14,15 @@ function addServer() {
         },
         body: JSON.stringify(myServer)
     })
-    serverURL.value = '';
+        .then(response => response.json())
+        .then(() => {
+        })
+        .catch(error => console.error('Unable to add item.', error));
+
 
 
 }
+
 
 
 
