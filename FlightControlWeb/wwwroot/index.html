@@ -36,57 +36,47 @@
 				</div>
 			</div>
 			<div class="col-md-4">
-				<table class="table table-hover">
+				<table id="tbid" class="table table-hover">
 					<thead>
 						<tr>
 							<th>
-								#
+								Flight ID
 							</th>
 							<th>
-								Flight name
+								Airline
 							</th>
 							<th>
-								Company
+								Is external
 							</th>
 							<th>
-								Arrival
-							</th>
-							<th>
-								Status
+								
 							</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>
-								1
-							</td>
-							<td>
-								ELal2427
-							</td>
-							<td>
-								01/04/2012
-							</td>
-							<td>
-								Default
-							</td>
-						</tr>
+
 
 					</tbody>
 				</table>
+
+
 			</div>
 		</div>
-		<div id="server">
-			<h3>Add Server</h3>
-			<form action="javascript:void(0);" method="POST" onsubmit="addServer()">
-				<input type="text" id="serverId">
-				<input type="submit" value="Add">
-			</form>
-			<div class="row">
-				<div class="col-md-12">
-				</div>
+		</div>
+	<div id="server">
+		<h3>Add Server</h3>
+		<form id="flightplanform" action="javascript:void(0);" method="POST" onsubmit="addflightplan()">
+			<input type="text" id="serverId">
+			<input type="submit" value="Add">
+		</form>
+		<button id="btn1" onclick="addflightplan()">Add flight plan</button>
+		<button id="btn1" onclick="getFlights()">Get flights</button>
+
+		<div class="row">
+			<div class="col-md-12">
 			</div>
 		</div>
+	</div>
 
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

@@ -16,6 +16,7 @@ function addServer() {
     })
         .then(response => response.json())
         .then(() => {
+            serverURL.value = '';
         })
         .catch(error => console.error('Unable to add item.', error));
 

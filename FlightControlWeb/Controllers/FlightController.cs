@@ -19,27 +19,33 @@ namespace FlightControlWeb.Controllers
         {
             flightManager = manager;
         }
-        /*
+        
 
         // GET: api/Flight
         [HttpGet]
         public IEnumerable<Flight> Get()
         {
-            return 
+            List<Flight> flights = new List<Flight>();
+            flights.Add(new Flight { FlightId = 1 , CompanyName= "EL-AL", IsExternal = false});
+            flights.Add(new Flight { FlightId = 3 , CompanyName="Swiss", IsExternal = false });
+            return flights;
         }
+        
 
         // GET: api/Flight/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "FlightGet")]
         public Flight Get(int id)
         {
-            return "value";
+            return new Flight { FlightId = 3 };
         }
-        */
+        
 
         // POST: api/Flight
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Flight value)
         {
+
+                
         }
 
         // PUT: api/Flight/5
