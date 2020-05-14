@@ -29,18 +29,34 @@ namespace FlightControlWeb.Controllers
 
         // GET: api/FlightPlan/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public FlightPlan Get(int id)
         {
-            return "value";
+
+            var flight_plan = new FlightPlan();
+            if(!memoryCache.TryGetValue(id, out flight_plan))
+            {
+                if(flight_plan == null)
+                {
+
+                }
+                return flight_plan;
+            }
+            /*
+            var fp = memoryCache.Get<FlightPlan?>(id);
+            if(fp != null)
+            {
+                return fp;
+            }
+            return fp;
+            */
+            return null;
         }
         
         // POST: api/FlightPlan
         [HttpPost]
         public void Post([FromBody] FlightPlan flightPlan)
         {
-            //just an example
-            int id = 13;
-            memoryCache.Set(id, flightPlan);
+            memoryCache.Set(flightPlan.FlightPlanId, flightPlan);
 
         }
 
@@ -48,6 +64,8 @@ namespace FlightControlWeb.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            memoryCache.Remove(id);
+
         }
         
     }

@@ -38,7 +38,7 @@ namespace FlightControlWeb.Controllers
             return new Flight { FlightId = 3 };
         }
         
-
+        /* DONT THINK YOU NEED THIS IN FLIGHT- THERE IS NO POST
         // POST: api/Flight
         [HttpPost]
         public void Post([FromBody] Flight value)
@@ -46,17 +46,22 @@ namespace FlightControlWeb.Controllers
 
                 
         }
+        */
 
+            /*
         // PUT: api/Flight/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
+        */
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            memoryCache.Remove(id);
+
         }
     }
 }
