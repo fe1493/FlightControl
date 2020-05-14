@@ -11,6 +11,7 @@ namespace FlightControlWeb.Models
         public Server GetServer(int id)
         {
             return servers.Find(item => item.ServerId == id);
+
         }
         public void AddServer(Server server)
         {
