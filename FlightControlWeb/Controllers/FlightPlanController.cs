@@ -14,13 +14,14 @@ namespace FlightControlWeb.Controllers
     public class FlightPlanController : ControllerBase
     {
         
-        private IFlightManager flightManager;
+        private IFlightManager flightManager = new MyFlightManager();
         private IMemoryCache memoryCache;
 
         public FlightPlanController(IFlightManager manager, IMemoryCache cache)
         {
             flightManager = manager;
             memoryCache = cache;
+            
         }
         /*
         // GET: api/FlightPlan

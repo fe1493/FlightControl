@@ -14,13 +14,13 @@ namespace FlightControlWeb.Controllers
     public class ServerController : ControllerBase
     {
         
-        private IFlightManager flightManager;
-
-        public ServerController(IFlightManager manager)
+        private IServerManager serverManager;
+        /*
+        public ServerController(IServerManager manager)
         {
-            flightManager = manager;
+            serverManager = manager;
         }
-        
+        */
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -38,7 +38,7 @@ namespace FlightControlWeb.Controllers
         [HttpPost]
         public void Post(Server server)
         {
-            flightManager.AddServer(server);
+            serverManager.AddServer(server);
         }
 
         // PUT: api/Server/5
