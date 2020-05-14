@@ -14,22 +14,18 @@ namespace FlightControlWeb.Controllers
     public class FlightPlanController : ControllerBase
     {
         
-        private IFlightManager flightManager = new MyFlightManager();
+        private IFlightManager flightManager;
         private IMemoryCache memoryCache;
-
+       
+        // dependency injection
         public FlightPlanController(IFlightManager manager, IMemoryCache cache)
         {
             flightManager = manager;
             memoryCache = cache;
             
         }
-        /*
-        // GET: api/FlightPlan
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        
+  
 
         // GET: api/FlightPlan/5
         [HttpGet("{id}", Name = "Get")]
@@ -37,7 +33,7 @@ namespace FlightControlWeb.Controllers
         {
             return "value";
         }
-        */
+        
         // POST: api/FlightPlan
         [HttpPost]
         public void Post([FromBody] FlightPlan flightPlan)
@@ -46,12 +42,6 @@ namespace FlightControlWeb.Controllers
             int id = 13;
             memoryCache.Set(id, flightPlan);
 
-        }
-
-        // PUT: api/FlightPlan/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
         }
 
         // DELETE: api/ApiWithActions/5

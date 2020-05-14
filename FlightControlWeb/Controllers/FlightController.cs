@@ -14,10 +14,12 @@ namespace FlightControlWeb.Controllers
     public class FlightController : ControllerBase
     {
         private IFlightManager flightManager;
+        private IMemoryCache memoryCache;
 
-        public FlightController(IFlightManager manager)
+        public FlightController(IFlightManager manager, IMemoryCache cache)
         {
             flightManager = manager;
+            memoryCache = cache;
         }
         
 
@@ -25,10 +27,7 @@ namespace FlightControlWeb.Controllers
         [HttpGet]
         public IEnumerable<Flight> Get()
         {
-            List<Flight> flights = new List<Flight>();
-            flights.Add(new Flight { FlightId = 1 , CompanyName= "EL-AL", IsExternal = false});
-            flights.Add(new Flight { FlightId = 3 , CompanyName="Swiss", IsExternal = false });
-            return flights;
+            
         }
         
 
