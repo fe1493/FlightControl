@@ -28,19 +28,18 @@ namespace FlightControlWeb.Controllers
   
 
         // GET: api/FlightPlan/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetFlightPlan")]
         public string Get(int id)
         {
             return "value";
         }
-        
+     
         // POST: api/FlightPlan
         [HttpPost]
         public void Post([FromBody] FlightPlan flightPlan)
         {
-            //just an example
-            int id = 13;
-            memoryCache.Set(id, flightPlan);
+            DateTime dateTime = DateTime.Now;
+            flightManager.CreateUpdatedFlight(flightPlan, dateTime);
 
         }
 

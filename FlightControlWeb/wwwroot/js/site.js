@@ -52,8 +52,8 @@ require([
         map.add(graphicsLayer);
         var point = {
             type: "point",
-            longitude: 32.80657463861,
-            latitude: 34.0005930608889
+            latitude: 0.0,
+            longitude: 0.0
         };
 
         var simpleMarkerSymbol = {
@@ -66,24 +66,17 @@ require([
         };
         var graphicsLayer = new GraphicsLayer();
         map.add(graphicsLayer);
-        var point2 = {
-            type: "point",
-            longitude: 30.80657463861,
-            latitude: 34.0005930608889
-        };
+
 
 
         var pointGraphic1 = new Graphic({
             geometry: point,
             symbol: simpleMarkerSymbol
         });
-        var pointGraphic2 = new Graphic({
-            geometry: point2,
-            symbol: simpleMarkerSymbol
-        });
+
 
         graphicsLayer.add(pointGraphic1);
-        graphicsLayer.add(pointGraphic2);
+
 
 });
 

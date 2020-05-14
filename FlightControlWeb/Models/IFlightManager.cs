@@ -7,6 +7,6 @@ namespace FlightControlWeb.Models
 {
     public interface IFlightManager
     {
-        
+        Flight CreateUpdatedFlight(FlightPlan flightPlan, DateTime dateTime);
     }
 }
