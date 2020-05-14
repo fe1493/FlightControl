@@ -42,6 +42,9 @@ namespace FlightControlWeb.Controllers
         [HttpPost]
         public void Post([FromBody] FlightPlan flightPlan)
         {
+            //just an example
+            int id = 13;
+            memoryCache.Set(id, flightPlan);
 
         }
 
