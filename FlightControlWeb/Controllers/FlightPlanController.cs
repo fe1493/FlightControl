@@ -22,7 +22,7 @@ namespace FlightControlWeb.Controllers
         {
             flightManager = manager;
             memoryCache = cache;
-            
+            memoryCache.Set(-1, new List<int> { });
         }
         
   
@@ -33,24 +33,17 @@ namespace FlightControlWeb.Controllers
         {
 
             var flight_plan = new FlightPlan();
-            if(!memoryCache.TryGetValue(id, out flight_plan))
-            {
-                if(flight_plan == null)
-                {
 
-                }
-                return flight_plan;
-            }
-           
-            /*
             var fp = memoryCache.Get<FlightPlan?>(id);
             if(fp != null)
             {
+                //need to throw error?
+
                 return fp;
             }
             return fp;
-            */
-            return null;
+            
+            
         }
         
         // POST: api/FlightPlan
@@ -58,6 +51,9 @@ namespace FlightControlWeb.Controllers
         public void Post([FromBody] FlightPlan flightPlan)
         {
             memoryCache.Set(flightPlan.FlightPlanId, flightPlan);
+
+            List<int> cache_list_keys = memoryCache.Get<List<int>?>(-1);
+            cache_list_keys.Add(flightPlan.FlightPlanId);
 
         }
 
