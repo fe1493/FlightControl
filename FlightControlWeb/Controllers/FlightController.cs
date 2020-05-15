@@ -61,7 +61,7 @@ namespace FlightControlWeb.Controllers
         public void Delete(int id)
         {
             memoryCache.Remove(id);
-
+             
         }
     }
 }
