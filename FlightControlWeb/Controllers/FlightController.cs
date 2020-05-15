@@ -21,47 +21,19 @@ namespace FlightControlWeb.Controllers
             flightManager = manager;
             memoryCache = cache;
         }
-        
 
-        // GET: api/Flight
+
         [HttpGet]
-        public IEnumerable<Flight> Get()
+        public IEnumerable<Flight> GetFlights(DateTime relative_to)
         {
-            
-        }
-        
+            if (Request.Query.ContainsKey("sync_all"))
+            {
 
-        // GET: api/Flight/5
-        [HttpGet("{id}", Name = "FlightGet")]
-        public Flight Get(int id)
-        {
-            return new Flight { FlightId = 3 };
-        }
-        
-        /* DONT THINK YOU NEED THIS IN FLIGHT- THERE IS NO POST
-        // POST: api/Flight
-        [HttpPost]
-        public void Post([FromBody] Flight value)
-        {
-
-                
-        }
-        */
-
-            /*
-        // PUT: api/Flight/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-        */
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            memoryCache.Remove(id);
-             
+            }
+            Flight flight = new Flight();
+            List<Flight> flights = new List<Flight>();
+            flights.Add(flight);
+            return flights;
         }
     }
 }

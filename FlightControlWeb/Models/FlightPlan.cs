@@ -9,14 +9,15 @@ namespace FlightControlWeb.Models
     {
         public int FlightPlanId { get; set; }
 
-        public int Passangers { get; set; }
+        public int Passengers { get; set; }
 
         public string CompanyName { get; set; }
-        public class InitialLocation {
+        public class Location {
             public double Longitude { get; set; }
             public double Latitude { get; set; }
             public DateTime DateTime { get; set; }
         }
+        public Location InitialLocation { get; set; }
         public List<Segment> Segments { get; set; }
 
     }
