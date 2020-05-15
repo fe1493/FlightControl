@@ -26,9 +26,9 @@ namespace FlightControlWeb.Controllers
         }
         
   
-
+        
         // GET: api/FlightPlan/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public FlightPlan Get(int id)
         {
 
@@ -41,6 +41,7 @@ namespace FlightControlWeb.Controllers
                 }
                 return flight_plan;
             }
+           
             /*
             var fp = memoryCache.Get<FlightPlan?>(id);
             if(fp != null)

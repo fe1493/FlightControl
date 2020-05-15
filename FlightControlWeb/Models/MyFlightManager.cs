@@ -37,7 +37,7 @@ namespace FlightControlWeb.Models
             Point p2 = new Point { X = segments[i].Longitude, Y = segments[i].Latitude };
             Line line = new Line { StartPoint = p1, EndPoint = p2 };
             Point currentPoint = line.GetPointOnLine(secondsAtCurrentSegment / segments[i].TimespanSeconds);
-            Flight updatedFlight = CreateCurrentFlight(flightPlan, currentPoint);
+            Flight updatedFlight = CreateCurrentFlight(flightPlan, currentPoint, relativeTime);
             return updatedFlight;
         }
 
@@ -58,16 +58,16 @@ namespace FlightControlWeb.Models
             segment.TimespanSeconds = 0;
             return segment;
         }
-        public Flight CreateCurrentFlight(FlightPlan flightPlan, Point currentLocation)
+        public Flight CreateCurrentFlight(FlightPlan flightPlan, Point currentLocation, DateTime relativeTime)
         {
             Flight flight = new Flight();
             flight.CompanyName = flightPlan.CompanyName;
             flight.FlightId = flightPlan.FlightPlanId;
             flight.IsExternal = false;
-            flight.Latitude = currentLocation.X;
-            flight.Longitude = currentLocation.Y;
+            flight.Latitude = currentLocation.Y;
+            flight.Longitude = currentLocation.X;
             flight.Passengers = flightPlan.Passengers;
-            //flight.DateTime ??
+            flight.DateTime = relativeTime;
             return flight;
         }
     }
