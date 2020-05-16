@@ -11,9 +11,9 @@ namespace FlightControlWeb.Models
         private double y;
         public double X
         {
-            get 
-            { 
-                return this.x; 
+            get
+            {
+                return this.x;
             }
             set
             {
@@ -22,14 +22,14 @@ namespace FlightControlWeb.Models
         }
         public double Y
         {
-            get 
+            get
             {
                 return this.y;
-            } 
+            }
             set
             {
                 this.y = value;
-            } 
+            }
         }
     }
 }

@@ -13,41 +13,66 @@ namespace FlightControlWeb.Controllers
     [ApiController]
     public class FlightPlanController : ControllerBase
     {
-        
+
         private IFlightManager flightManager;
-        private IMemoryCache memoryCache;
-       
+        private IMemoryCache _cache;
+
         // dependency injection
         public FlightPlanController(IFlightManager manager, IMemoryCache cache)
         {
             flightManager = manager;
-            memoryCache = cache;
-            
+            _cache = cache;
         }
-        
-  
+
+
 
         // GET: api/FlightPlan/5
-        [HttpGet("{id}", Name = "GetFlightPlan")]
-        public string Get(int id)
+        [HttpGet("{id}")]
+        public FlightPlan GetFlightPlan(string id)
         {
-            return "value";
+            var flight_plan = new FlightPlan();
+
+            var fp = _cache.Get<FlightPlan>(id);
+            if (fp == null)
+            {
+                return null;
+            }
+            return fp;
+
+
         }
-     
+            
         // POST: api/FlightPlan
         [HttpPost]
         public void Post([FromBody] FlightPlan flightPlan)
         {
-            DateTime dateTime = DateTime.Now;
-            flightManager.CreateUpdatedFlight(flightPlan, dateTime);
-
+            string flightPlanId = flightManager.CreateIdentifier(flightPlan);
+            flightPlan.FlightPlanId = flightPlanId;
+            _cache.Set(flightPlan.FlightPlanId, flightPlan);
+            
+            List<string> keys = new List<string>();
+            if (!_cache.TryGetValue("list_key", out keys))
+            {
+                keys = new List<string>();
+                keys.Add(flightPlan.FlightPlanId);
+                _cache.Set("list_key", keys);
+            }
+            else
+            {
+                keys.Add(flightPlan.FlightPlanId);
+                _cache.Remove("list_key");
+                _cache.Set("list_key", keys);
+                
+            }
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            _cache.Remove(id);
+
         }
-        
+
     }
 }

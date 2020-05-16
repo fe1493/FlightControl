@@ -10,17 +10,17 @@ namespace FlightControlWeb.Models
         private Point startPoint;
         private Point endPoint;
 
-        public Point StartPoint 
-        { 
+        public Point StartPoint
+        {
             get
-            { 
-                return this.startPoint; 
+            {
+                return this.startPoint;
             }
             set
             {
                 this.startPoint = value;
-            } 
-        } 
+            }
+        }
         public Point EndPoint
         {
             get
@@ -36,14 +36,14 @@ namespace FlightControlWeb.Models
         public Point GetPointOnLine(double fraction)
         {
             //check valid parameter
-            if (fraction >1)
+            if (fraction > 1)
             {
                 return null;
             }
-            double xDistance = (endPoint.X - startPoint.X)*fraction;
-            double yDistance = (endPoint.Y - startPoint.Y)*fraction;
+            double xDistance = (endPoint.X - startPoint.X) * fraction;
+            double yDistance = (endPoint.Y - startPoint.Y) * fraction;
             Point newPoint = new Point { X = startPoint.X + xDistance, Y = startPoint.Y + yDistance };
-            
+
             return newPoint;
         }
 

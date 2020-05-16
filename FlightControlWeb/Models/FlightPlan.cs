@@ -7,7 +7,7 @@ namespace FlightControlWeb.Models
 {
     public class FlightPlan
     {
-        public int FlightPlanId { get; set; }
+        public string FlightPlanId { get; set; }
 
         public int Passengers { get; set; }
 
@@ -17,7 +17,7 @@ namespace FlightControlWeb.Models
             public double Latitude { get; set; }
             public DateTime DateTime { get; set; }
         }
-        public Location InitialLocation{ get; set; }
+        public Location InitialLocation { get; set; }
         public List<Segment> Segments { get; set; }
 
     }
