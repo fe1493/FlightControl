@@ -7,7 +7,7 @@ namespace FlightControlWeb.Models
 {
     public class FlightPlan
     {
-        public int FlightPlanId { get; set; }
+        public string FlightPlanId { get; set; }
 
         public int Passengers { get; set; }
 
