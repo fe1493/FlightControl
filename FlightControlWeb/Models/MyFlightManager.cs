@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
     public class MyFlightManager : IFlightManager
     {
+        //the function finds the current location of the flightplan according to the given relative time
         public Flight CreateUpdatedFlight(FlightPlan flightPlan, DateTime relativeTime)
         {
             double secondsTimeSpan = SecondsGap(flightPlan.InitialLocation.DateTime, relativeTime);
@@ -69,6 +71,36 @@ namespace FlightControlWeb.Models
             flight.Passengers = flightPlan.Passengers;
             flight.DateTime = relativeTime;
             return flight;
+        }
+
+
+        //create a random id for a flight plan
+        public string CreateIdentifier(FlightPlan flightPlan)
+        {
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+            int length = random.Next(6, 11);
+            string companyStr = flightPlan.CompanyName;
+            int companyNmLen = flightPlan.CompanyName.Length;
+            int j = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                char c = Char.ToUpper(companyStr[j % companyNmLen]);
+                if (c >= 'A' && c <= 'Z')
+                { 
+                    builder.Append(c);
+                    j++;
+                } 
+                else { i--;
+                    j++;
+                }
+            }
+            for(int i = 0; i < length - 3; i++)
+            {
+                builder.Append(random.Next(0, 10));
+            }
+            
+            return builder.ToString();
         }
     }
 }
