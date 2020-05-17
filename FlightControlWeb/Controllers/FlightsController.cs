@@ -11,12 +11,12 @@ namespace FlightControlWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlightController : ControllerBase
+    public class FlightsController : ControllerBase
     {
         private IFlightManager flightManager;
         private IMemoryCache memoryCache;
 
-        public FlightController(IFlightManager manager, IMemoryCache cache)
+        public FlightsController(IFlightManager manager, IMemoryCache cache)
         {
             flightManager = manager;
             memoryCache = cache;
@@ -24,9 +24,9 @@ namespace FlightControlWeb.Controllers
 
 
         [HttpGet]
-        public IEnumerable<Flight> GetFlights(DateTime relative_to)
+        public IEnumerable<Flights> GetFlights(DateTime relative_to)
         {
-            List<Flight> flight_list = new List<Flight>();
+            List<Flights> flight_list = new List<Flights>();
 
             if (Request.Query.ContainsKey("sync_all"))
             {
@@ -39,7 +39,7 @@ namespace FlightControlWeb.Controllers
                 FlightPlan fp;
 
                 fp = memoryCache.Get<FlightPlan>(id);
-                Flight flight = flightManager.CreateUpdatedFlight(fp, relative_to);
+                Flights flight = flightManager.CreateUpdatedFlight(fp, relative_to);
                 flight_list.Add(flight);
             }
             return flight_list;
