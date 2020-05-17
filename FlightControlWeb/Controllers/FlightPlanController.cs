@@ -45,6 +45,7 @@ namespace FlightControlWeb.Controllers
             
             
         }
+
         
         // POST: api/FlightPlan
         [HttpPost]
@@ -52,10 +53,51 @@ namespace FlightControlWeb.Controllers
         {
             memoryCache.Set(flightPlan.FlightPlanId, flightPlan);
 
-            List<int> cache_list_keys = memoryCache.Get<List<int>?>(-1);
-            cache_list_keys.Add(flightPlan.FlightPlanId);
+            List<int> cache_list_keys = new List<int>();
+
+            if (!memoryCache.TryGetValue("list_key", out cache_list_keys))
+            {
+                cache_list_keys = new List<int>();
+                cache_list_keys.Add(flightPlan.FlightPlanId);
+                memoryCache.Set("list_key", cache_list_keys);
+            }
+            else
+            {
+                cache_list_keys.Add(flightPlan.FlightPlanId);
+                memoryCache.Remove("list_key");
+                memoryCache.Set("list_key", cache_list_keys);
+
+            }
+
+
+
+         
 
         }
+        /*
+        public void Post([FromBody] FlightPlan flightPlan)
+        {
+            string flightPlanId = flightManager.CreateIdentifier(flightPlan);
+            flightPlan.FlightPlanId = flightPlanId;
+            _cache.Set(flightPlan.FlightPlanId, flightPlan);
+
+            List<string> keys = new List<string>();
+            if (!_cache.TryGetValue("list_key", out keys))
+            {
+                keys = new List<string>();
+                keys.Add(flightPlan.FlightPlanId);
+                _cache.Set("list_key", keys);
+            }
+            else
+            {
+                keys.Add(flightPlan.FlightPlanId);
+                _cache.Remove("list_key");
+                _cache.Set("list_key", keys);
+
+            }
+        }
+        */
+
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
