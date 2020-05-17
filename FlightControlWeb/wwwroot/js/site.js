@@ -27,16 +27,17 @@ function addServer() {
 
 
 
-
-
-
+let myPic;
+let myGraphLayer
+var airplansDic = {};
 
 require([
     "esri/Map",
     "esri/views/MapView",
     "esri/Graphic",
-    "esri/layers/GraphicsLayer"
-], function (Map, MapView, Graphic, GraphicsLayer) {
+    "esri/layers/GraphicsLayer",
+    "esri/symbols/PictureMarkerSymbol"
+], function (Map, MapView, Graphic, GraphicsLayer, PictureMarkerSymbol) {
 
     var map = new Map({
         basemap: "streets"
@@ -48,40 +49,72 @@ require([
         center: [32.00, 34.02700],
         zoom: 4
     });
-        var graphicsLayer = new GraphicsLayer();
+
+    var graphicsLayer = new GraphicsLayer();
         map.add(graphicsLayer);
-        var point = {
-            type: "point",
-            latitude: 0.0,
-            longitude: 0.0
-        };
+        myGraphicsLayer = graphicsLayer;
 
-        var simpleMarkerSymbol = {
-            type: "simple-marker",
-            color: [226, 119, 40],  // orange
-            outline: {
-                color: [255, 255, 255], // white
-                width: 1
-            }
-        };
-        var graphicsLayer = new GraphicsLayer();
-        map.add(graphicsLayer);
+    var airplanPicture = new PictureMarkerSymbol({
+        url: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png",
+        width: "50px",
+        height: "50px"
+    });
+        myPic = airplanPicture;
+        
+        function addPlan(a,b, id) {
+            var airplanGraphic = new Graphic();
+            airplanGraphic.attributes = {
+                name: id,
+            };
+            airplansDic[airplanGraphic.attributes.name] = airplanGraphic;
+            myGraphicsLayer.add(airplanGraphic);
+
+            var point = {
+                type: "point",
+            };
+            point.latitude = a;
+            point.longitude = b;
+
+            airplanGraphic.geometry = point;
+            airplanGraphic.symbol = myPic;
+        }
 
 
+        function updatePlan(a, b, name) {
+            var apg = airplansDic[name];
+            var point = {
+                type: "point",
+            };
+            point.latitude = a;
+            point.longitude = b;
+            apg.geometry = point;
+        }
 
-        var pointGraphic1 = new Graphic({
-            geometry: point,
-            symbol: simpleMarkerSymbol
-        });
-
-
-        graphicsLayer.add(pointGraphic1);
-
+        window.addPlan = addPlan;
+        window.updatePlan = updatePlan;
+        
 
 });
 
+function test() {
 
-
-function randomInteger(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    var lat= document.getElementById("latitude");
+    var lon = document.getElementById("longitude")
+    const l = Number(lat.value);
+    const k = Number(lon.value);
+    addPlan(l, k, "elal");
+        
+    }
+function testUpdate() {
+    
+    var lat= document.getElementById("latitude");
+    var lon = document.getElementById("longitude")
+    const l = Number(lat.value);
+    const k = Number(lon.value);
+    updatePlan(l, k, "elal");
 }
+
+
+
+
+
