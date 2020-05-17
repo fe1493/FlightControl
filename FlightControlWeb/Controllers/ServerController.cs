@@ -32,7 +32,7 @@ namespace FlightControlWeb.Controllers
                 List<Server> serverslist = new List<Server>();
 
     
-                List<string> cache_list_keys = memoryCache.Get("list_key") as List<string>;
+                List<int> cache_list_keys = memoryCache.Get("list_key") as List<int>;
 
                 foreach (var id in cache_list_keys)
                 {
@@ -73,6 +73,9 @@ namespace FlightControlWeb.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
+            List<int> cache_list_keys = memoryCache.Get("list_key") as List<int>;
+            cache_list_keys.Remove(id);
             memoryCache.Remove(id);
         }
     }
