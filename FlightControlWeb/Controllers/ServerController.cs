@@ -5,52 +5,75 @@ using System.Threading.Tasks;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FlightControlWeb.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
 
+    [Route("api/[controller]")]
+    [ApiController]
     public class ServerController : ControllerBase
     {
         
         private IServerManager serverManager;
-        /*
-        public ServerController(IServerManager manager)
+        private IMemoryCache memoryCache;
+
+        public ServerController(IServerManager manager, IMemoryCache cache)
         {
             serverManager = manager;
+            memoryCache = cache;
+
         }
-        */
+        // GET:  i think:   /api/servers
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Server> Get()
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/Server/5
-        [HttpGet("{id}", Name = "Get")]
-        public Server Get(int id)
-        {
-            return new Server { ServerId = id, ServerURL = "cds" };
             
+                List<Server> serverslist = new List<Server>();
+
+    
+                List<string> cache_list_keys = memoryCache.Get("list_key") as List<string>;
+
+                foreach (var id in cache_list_keys)
+                {
+                    Server server;
+
+                server = memoryCache.Get<Server>(id);
+
+                serverslist.Add(server);
+                }
+                return serverslist;
         }
 
+        // POST:  i think:   /api/servers
         [HttpPost]
         public void Post(Server server)
         {
-            serverManager.AddServer(server);
+            memoryCache.Set(server.ServerId, server);
+
+            List<int> keys = new List<int>();
+            if (!memoryCache.TryGetValue("list_key", out keys))
+            {
+                keys = new List<int>();
+                keys.Add(server.ServerId);
+                memoryCache.Set("list_key", keys);
+            }
+            else
+            {
+                keys.Add(server.ServerId);
+                memoryCache.Remove("list_key");
+                memoryCache.Set("list_key", keys);
+
+            }
         }
 
-        // PUT: api/Server/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+ 
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            memoryCache.Remove(id);
         }
     }
 }

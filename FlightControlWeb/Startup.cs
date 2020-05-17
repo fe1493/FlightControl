@@ -31,6 +31,8 @@ namespace FlightControlWeb
             services.AddMemoryCache();
 
             services.AddSingleton<IFlightManager, MyFlightManager>();
+            services.AddSingleton<IServerManager, MyServerManager>();
+
 
 
             services.AddControllers();
