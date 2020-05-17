@@ -14,7 +14,7 @@ namespace FlightControlWeb.Controllers
     [ApiController]
     public class ServersController : ControllerBase
     {
-        
+
         private IServerManager serverManager;
         private IMemoryCache memoryCache;
 
@@ -28,21 +28,21 @@ namespace FlightControlWeb.Controllers
         [HttpGet]
         public IEnumerable<Servers> Get()
         {
-            
-                List<Servers> serverslist = new List<Servers>();
 
-    
-                List<int> cache_list_keys = memoryCache.Get("list_key") as List<int>;
+            List<Servers> serverslist = new List<Servers>();
 
-                foreach (var id in cache_list_keys)
-                {
-                    Servers server;
+
+            List<string> cache_list_keys = memoryCache.Get("list_key") as List<string>;
+
+            foreach (var id in cache_list_keys)
+            {
+                Servers server;
 
                 server = memoryCache.Get<Servers>(id);
 
                 serverslist.Add(server);
-                }
-                return serverslist;
+            }
+            return serverslist;
         }
 
         // POST:  i think:   /api/servers
@@ -51,10 +51,10 @@ namespace FlightControlWeb.Controllers
         {
             memoryCache.Set(server.ServerId, server);
 
-            List<int> keys = new List<int>();
+            List<string> keys = new List<string>();
             if (!memoryCache.TryGetValue("list_key", out keys))
             {
-                keys = new List<int>();
+                keys = new List<string>();
                 keys.Add(server.ServerId);
                 memoryCache.Set("list_key", keys);
             }
@@ -67,14 +67,14 @@ namespace FlightControlWeb.Controllers
             }
         }
 
- 
+
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
 
-            List<int> cache_list_keys = memoryCache.Get("list_key") as List<int>;
+            List<string> cache_list_keys = memoryCache.Get("list_key") as List<string>;
             cache_list_keys.Remove(id);
             memoryCache.Remove(id);
         }

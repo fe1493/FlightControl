@@ -9,7 +9,7 @@ namespace FlightControlWeb.Models
     {
    
             List<Servers> servers = new List<Servers>();
-            public Servers GetServer(int id)
+            public Servers GetServer(string id)
             {
                 return servers.Find(item => item.ServerId == id);
 
