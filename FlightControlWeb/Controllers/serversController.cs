@@ -12,13 +12,13 @@ namespace FlightControlWeb.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class serversController : ControllerBase
+    public class ServersController : ControllerBase
     {
         
         private IServerManager serverManager;
         private IMemoryCache memoryCache;
 
-        public serversController(IServerManager manager, IMemoryCache cache)
+        public ServersController(IServerManager manager, IMemoryCache cache)
         {
             serverManager = manager;
             memoryCache = cache;
@@ -26,19 +26,19 @@ namespace FlightControlWeb.Controllers
         }
         // POST:  i think:   /api/servers
         [HttpGet]
-        public IEnumerable<servers> Get()
+        public IEnumerable<Servers> Get()
         {
             
-                List<servers> serverslist = new List<servers>();
+                List<Servers> serverslist = new List<Servers>();
 
     
                 List<int> cache_list_keys = memoryCache.Get("list_key") as List<int>;
 
                 foreach (var id in cache_list_keys)
                 {
-                    servers server;
+                    Servers server;
 
-                server = memoryCache.Get<servers>(id);
+                server = memoryCache.Get<Servers>(id);
 
                 serverslist.Add(server);
                 }
@@ -47,7 +47,7 @@ namespace FlightControlWeb.Controllers
 
         // POST:  i think:   /api/servers
         [HttpPost]
-        public void Post(servers server)
+        public void Post(Servers server)
         {
             memoryCache.Set(server.ServerId, server);
 
