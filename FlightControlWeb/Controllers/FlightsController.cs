@@ -26,23 +26,23 @@ namespace FlightControlWeb.Controllers
         [HttpGet]
         public IEnumerable<Flights> GetFlights(DateTime relative_to)
         {
-            List<Flights> flight_list = new List<Flights>();
+            List<Flights> flightsList = new List<Flights>();
 
             if (Request.Query.ContainsKey("sync_all"))
             {
 
             }
-            List<string> cache_list_keys = memoryCache.Get("list_key") as List<string>;
+            List<string> fpListOfKeys = memoryCache.Get("flightListKeys") as List<string>;
 
-            foreach (var id in cache_list_keys)
+            foreach (var id in fpListOfKeys)
             {
                 FlightPlan fp;
 
                 fp = memoryCache.Get<FlightPlan>(id);
                 Flights flight = flightManager.CreateUpdatedFlight(fp, relative_to);
-                flight_list.Add(flight);
+                flightsList.Add(flight);
             }
-            return flight_list;
+            return flightsList;
         }
     }
 }

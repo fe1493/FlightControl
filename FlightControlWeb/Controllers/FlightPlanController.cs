@@ -15,13 +15,13 @@ namespace FlightControlWeb.Controllers
     {
 
         private IFlightManager flightManager;
-        private IMemoryCache _cache;
+        private IMemoryCache memoryCache;
 
         // dependency injection
         public FlightPlanController(IFlightManager manager, IMemoryCache cache)
         {
             flightManager = manager;
-            _cache = cache;
+            memoryCache = cache;
         }
 
 
@@ -30,9 +30,7 @@ namespace FlightControlWeb.Controllers
         [HttpGet("{id}")]
         public FlightPlan GetFlightPlan(string id)
         {
-            var flight_plan = new FlightPlan();
-
-            var fp = _cache.Get<FlightPlan>(id);
+            var fp = memoryCache.Get<FlightPlan>(id);
             if (fp == null)
             {
                 return null;
@@ -48,20 +46,20 @@ namespace FlightControlWeb.Controllers
         {
             string flightPlanId = flightManager.CreateIdentifier(flightPlan);
             flightPlan.FlightPlanId = flightPlanId;
-            _cache.Set(flightPlan.FlightPlanId, flightPlan);
+            memoryCache.Set(flightPlan.FlightPlanId, flightPlan);
             
-            List<string> keys = new List<string>();
-            if (!_cache.TryGetValue("list_key", out keys))
+            List<string> fpKeys = new List<string>();
+            if (!memoryCache.TryGetValue("flightListKeys", out fpKeys))
             {
-                keys = new List<string>();
-                keys.Add(flightPlan.FlightPlanId);
-                _cache.Set("list_key", keys);
+                fpKeys = new List<string>();
+                fpKeys.Add(flightPlan.FlightPlanId);
+                memoryCache.Set("flightListKeys", fpKeys);
             }
             else
             {
-                keys.Add(flightPlan.FlightPlanId);
-                _cache.Remove("list_key");
-                _cache.Set("list_key", keys);
+                fpKeys.Add(flightPlan.FlightPlanId);
+                memoryCache.Remove("flightListKeys");
+                memoryCache.Set("flightListKeys", fpKeys);
                 
             }
         }
@@ -70,10 +68,10 @@ namespace FlightControlWeb.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            List<string> cache_list_keys = _cache.Get("list_key") as List<string>;
+            List<string> cache_list_keys = memoryCache.Get("flightListKeys") as List<string>;
             cache_list_keys.Remove(id);
 
-            _cache.Remove(id);
+            memoryCache.Remove(id);
 
         }
 

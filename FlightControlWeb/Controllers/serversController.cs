@@ -24,17 +24,17 @@ namespace FlightControlWeb.Controllers
             memoryCache = cache;
 
         }
-        // POST:  i think:   /api/servers
+        // GET:    /api/servers
         [HttpGet]
         public IEnumerable<Servers> Get()
         {
-
+            
             List<Servers> serverslist = new List<Servers>();
 
 
-            List<string> cache_list_keys = memoryCache.Get("list_key") as List<string>;
+            List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
 
-            foreach (var id in cache_list_keys)
+            foreach (var id in serverIdKeysList)
             {
                 Servers server;
 
@@ -43,28 +43,31 @@ namespace FlightControlWeb.Controllers
                 serverslist.Add(server);
             }
             return serverslist;
+            
         }
 
-        // POST:  i think:   /api/servers
+        // POST:    /api/servers
         [HttpPost]
         public void Post(Servers server)
         {
             memoryCache.Set(server.ServerId, server);
 
-            List<string> keys = new List<string>();
-            if (!memoryCache.TryGetValue("list_key", out keys))
+
+            List<string> serverIdKeysList = new List<string>();
+            if (!memoryCache.TryGetValue("serverListKeys", out serverIdKeysList))
             {
-                keys = new List<string>();
-                keys.Add(server.ServerId);
-                memoryCache.Set("list_key", keys);
+                serverIdKeysList = new List<string>();
+                serverIdKeysList.Add(server.ServerId);
+                memoryCache.Set("serverListKeys", serverIdKeysList);
             }
             else
             {
-                keys.Add(server.ServerId);
-                memoryCache.Remove("list_key");
-                memoryCache.Set("list_key", keys);
+                serverIdKeysList.Add(server.ServerId);
+                memoryCache.Remove("serverListKeys");
+                memoryCache.Set("serverListKeys", serverIdKeysList);
 
             }
+
         }
 
 
@@ -74,8 +77,8 @@ namespace FlightControlWeb.Controllers
         public void Delete(string id)
         {
 
-            List<string> cache_list_keys = memoryCache.Get("list_key") as List<string>;
-            cache_list_keys.Remove(id);
+            List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
+            serverIdKeysList.Remove(id);
             memoryCache.Remove(id);
         }
     }
