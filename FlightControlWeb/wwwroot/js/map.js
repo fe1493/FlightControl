@@ -23,12 +23,9 @@ function addServer() {
 
 }
 
-
-
-
 let myPic;
-let myGraphLayer
 var airplansDic = {};
+var currentPath;
 
 require([
     "esri/Map",
@@ -51,7 +48,6 @@ require([
 
     var graphicsLayer = new GraphicsLayer();
     map.add(graphicsLayer);
-    myGraphicsLayer = graphicsLayer;
 
     var airplanPicture = new PictureMarkerSymbol({
         url: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png",
@@ -60,82 +56,115 @@ require([
     });
     myPic = airplanPicture;
 
+        function drawSegments(segments) {
+            let i = 0;
 
-    var simpleLineSymbol = {
-        type: "simple-line",
-        color: [226, 119, 40], // orange
-        width: 2
-    };
+            var polylineGraphic = new Graphic();
+            currentPath = polylineGraphic;
+            var simpleLineSymbol = {
+                type: "simple-line",
+                color: [0,0,0],
+                width: 3
+            };
+            var myPolyline = {
+                type: "polyline",
+                paths: [
+                ]
+            };
+            for (i = 0; i < segments.length; i++) {
+                myPolyline.paths.push([segments[i]["lat"], segments[i]["lon"]]);
+            }
+            polylineGraphic.geometry = myPolyline;
+            polylineGraphic.symbol = simpleLineSymbol;
 
-    var polyline = {
-        type: "polyline",
-        paths: [
-            [32.821527826096, 34.0139576938577],
-            [32.814893761649, 34.0080602407843],
-            [33.808878330345, 34.0016642996246]
-        ]
-    };
-
-        var polylineGraphic = new Graphic({
-            geometry: polyline,
-            symbol: simpleLineSymbol
-        });
-
-    graphicsLayer.add(polylineGraphic);
-
-
-
+            graphicsLayer.add(polylineGraphic);
+            currentPath = polylineGraphic;
 
 
-    function addPlan(a, b, id) {
+        }
+        function removeSegments() {
+            graphicsLayer.remove(currentPath);
+            console.log("in remve");
+            
+        }
+        
+
+
+    function addPlan(lat, lon, id) {
         var airplanGraphic = new Graphic();
         airplanGraphic.attributes = {
             name: id,
         };
         airplansDic[airplanGraphic.attributes.name] = airplanGraphic;
-        myGraphicsLayer.add(airplanGraphic);
+        graphicsLayer.add(airplanGraphic);
 
         var point = {
             type: "point",
         };
-        point.latitude = a;
-        point.longitude = b;
+        point.latitude = lat;
+        point.longitude = lon;
 
         airplanGraphic.geometry = point;
         airplanGraphic.symbol = myPic;
     }
+        
 
-
-    function updatePlan(a, b, name) {
-        var apg = airplansDic[name];
+    function updatePlan(lat, lon, id) {
+        var apg = airplansDic[id];
         var point = {
             type: "point",
         };
-        point.latitude = a;
-        point.longitude = b;
+        point.latitude = lat;
+        point.longitude = lon;
         apg.geometry = point;
     }
 
     window.addPlan = addPlan;
     window.updatePlan = updatePlan;
+        window.drawSegments = drawSegments;
+        window.removeSegments = removeSegments;
 
 
 });
 
-function test() {
-
+function addNewPlan() {
+    
     var lat = document.getElementById("latitude");
-    var lon = document.getElementById("longitude")
+    var lon = document.getElementById("longitude");
+    var id = document.getElementById("planId");
+    const i = id.value;
     const l = Number(lat.value);
     const k = Number(lon.value);
-    addPlan(l, k, "elal");
+    addPlan(l, k, i);
+    const lq = [];
+    var seg1 = { "lat": 32, "lon": 32 };
+    var seg2 = { "lat": 46, "lon": 21 };
+    var seg3 = { "lat": 45, "lon": 36 };
+    var seg4 = { "lat": 13, "lon": 55 };
+    lq.push(seg1);
+    lq.push(seg2);
+    lq.push(seg3);
+    lq.push(seg4);
 
+    drawSegments(lq);
 }
-function testUpdate() {
+function drawPlanPath(segments) {
+    drawSegments(segments);
+}
+function hidePath() {
+    removeSegments();
+}
+
+
+
+function updatePlanOnMap() {
 
     var lat = document.getElementById("latitude");
-    var lon = document.getElementById("longitude")
+    var lon = document.getElementById("longitude");
+    var id = document.getElementById("planId");
+    const i = id.value;
     const l = Number(lat.value);
     const k = Number(lon.value);
-    updatePlan(l, k, "elal");
+    updatePlan(l, k, i);
+
 }

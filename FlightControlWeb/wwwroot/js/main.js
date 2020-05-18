@@ -9,6 +9,7 @@ function addflightplan() {
 }
 let i =0
 function getFlights() {
+    hidePath();
     $.getJSON("../api/flight", function (data) {
 
         data.forEach(function (flight) {

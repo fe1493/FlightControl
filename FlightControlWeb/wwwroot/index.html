@@ -73,10 +73,12 @@
 		<button id="btn1" onclick="addflightplan()">Add flight plan</button>
 		<button id="btn1" onclick="getFlights()">Get flights</button><br />
 		<p>enter latitude an longitude for the airplan and update or draw new plan</p>
-		<input type="text" id="longitude" value="longitude">
-		<input type="text" id="latitude" value="latitude">
-		<button id="btn3" onclick="test()">Draw airplan</button>
-		<button id="btn4" onclick="testUpdate()">update airplan</button>
+		<input type="text" id="longitude" value="30">
+		<input type="text" id="latitude" value="32">
+		<input type="text" id="planId" value="id">
+		<button id="btn3" onclick="addNewPlan()">Draw airplan</button>
+		<button id="btn4" onclick="updatePlanOnMap()">update airplan</button>
+		<button id="btn5" onclick="hidePath()">hide path of the flight</button>
 
 		<div class="row">
 			<div class="col-md-12">
