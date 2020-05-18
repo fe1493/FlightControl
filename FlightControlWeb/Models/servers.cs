@@ -9,6 +9,6 @@ namespace FlightControlWeb.Models
     public class Servers
     {
         public string ServerId { get; set; }
-        public string ServerURL { get; set; }
+        public string ServerURL { get; set; } 
     }
 }
