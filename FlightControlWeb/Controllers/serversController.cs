@@ -28,7 +28,7 @@ namespace FlightControlWeb.Controllers
         [HttpGet]
         public IEnumerable<Servers> Get()
         {
-            
+             
             List<Servers> serverslist = new List<Servers>();
 
 
