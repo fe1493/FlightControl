@@ -12,13 +12,13 @@ namespace FlightControlWeb.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class ServersController : ControllerBase
+    public class serversController : ControllerBase
     {
 
         private IServerManager serverManager;
         private IMemoryCache memoryCache;
 
-        public ServersController(IServerManager manager, IMemoryCache cache)
+        public serversController(IServerManager manager, IMemoryCache cache)
         {
             serverManager = manager;
             memoryCache = cache;
