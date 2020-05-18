@@ -68,8 +68,8 @@ namespace FlightControlWeb.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            List<string> cache_list_keys = memoryCache.Get("flightListKeys") as List<string>;
-            cache_list_keys.Remove(id);
+            List<string> fpKeys = memoryCache.Get("flightListKeys") as List<string>;
+            fpKeys.Remove(id);
 
             memoryCache.Remove(id);
 
