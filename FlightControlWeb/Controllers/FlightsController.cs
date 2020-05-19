@@ -6,6 +6,7 @@ using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 
 namespace FlightControlWeb.Controllers
 {
@@ -15,6 +16,7 @@ namespace FlightControlWeb.Controllers
     {
         private IFlightManager flightManager;
         private IMemoryCache memoryCache;
+        private MyServerManager myServerManager;
 
         public FlightsController(IFlightManager manager, IMemoryCache cache)
         {
@@ -23,14 +25,38 @@ namespace FlightControlWeb.Controllers
         }
 
 
+
+        public async Task<List<Flights>> Func(Servers servers)
+        {
+            HttpRequestClass httpRequestClass = new HttpRequestClass();
+            // string response = await httpRequestClass.makeRequest(servers.ServerURL);
+            List<Flights> fl = await httpRequestClass.makeRequest(servers.ServerURL);
+         //   Console.WriteLine(response);
+          //  List<Flights> fl = new List<Flights>();
+          //  fl = JsonConvert.DeserializeObject<List<Flights>>(response);
+            return fl;
+        }
+
+
+
         [HttpGet]
-        public IEnumerable<Flights> GetFlights(DateTime relative_to)
+        public async Task<IEnumerable<Flights>> GetFlights(DateTime relative_to)
         {
             List<Flights> flightsList = new List<Flights>();
 
             if (Request.Query.ContainsKey("sync_all"))
             {
+                List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
+               
+                foreach (var id in serverIdKeysList)
+                {
+                    Servers server = memoryCache.Get(id) as Servers;
+                    List<Flights> fl = new List<Flights>();
+                    fl = await Func(server);
 
+                    flightsList.AddRange(fl);
+                }
+                return flightsList;
             }
             List<string> fpListOfKeys = memoryCache.Get("flightListKeys") as List<string>;
 
