@@ -2,3 +2,15 @@
     height: 500px;
     width: 1000px;
 }
+
+#property {
+    font-size: large;
+}
+
+#lonIni {
+    margin-left: 145px;
+}
+
+#lonFin {
+    margin-left: 136px;
+}
