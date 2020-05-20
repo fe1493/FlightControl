@@ -33,21 +33,6 @@ namespace FlightControlWeb.Controllers
             List<Flights> fl = new List<Flights>();
             fl = JsonConvert.DeserializeObject<List<Flights>>(response);
             return fl;
-
-            /*
-            // string response = await httpRequestClass.makeRequest(servers.ServerURL);
-           
-            
-            List<Flights> fl = await httpRequestClass.makeRequest(servers.ServerURL);
-
-
-
-         //   Console.WriteLine(response);
-          //  List<Flights> fl = new List<Flights>();
-          //  fl = JsonConvert.DeserializeObject<List<Flights>>(response);
-            return fl;
-
-    */
         }
 
 
@@ -55,23 +40,14 @@ namespace FlightControlWeb.Controllers
         [HttpGet]
         public async Task<IEnumerable<Flights>> GetFlights(DateTime relative_to)
         {
-            List<Flights> flightsList = new List<Flights>();
-
-           
-            
-            
+            List<Flights> flightsList = new List<Flights>();           
             if (Request.Query.ContainsKey("sync_all"))
             {
                 List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
-
-     
-
-
-
-
+               
                 //for each id of server -> insert all id's of all its flights into a List/array
                 //put map in cache
-                //fix func of flightplan so will work with servers?
+               
 
 
                 foreach (var id in serverIdKeysList)

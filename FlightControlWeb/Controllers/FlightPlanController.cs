@@ -32,20 +32,6 @@ namespace FlightControlWeb.Controllers
         public async Task<FlightPlan> GetFlightPlanByIdFromServer(Servers servers, string param)
         {
 
-            /*
-            HttpRequestClass httpRequestClass = new HttpRequestClass();
-        
-           // List<Flights> fl = await httpRequestClass.makeRequest(servers.ServerURL + param);
-
-            var result = await httpRequestClass.makeRequest(servers.ServerURL + param);
-
-            foreach (var flights1 in fl)
-            {
-                Flights flights = flights1;
-                return flights;
-            }
-            return null;
-            */
             HttpRequestClass httpRequestClass = new HttpRequestClass();
             var result = await httpRequestClass.makeRequest(servers.ServerURL + param);
 
@@ -54,15 +40,7 @@ namespace FlightControlWeb.Controllers
             fp = JsonConvert.DeserializeObject<FlightPlan>(result);
             return fp;
         }
-
-
-
-
-
-
-
-
-
+       
         // GET: api/FlightPlan/5
         [HttpGet("{id}")]
         public async Task<FlightPlan> GetFlightPlan(string id)
@@ -82,55 +60,30 @@ namespace FlightControlWeb.Controllers
                 }
                 else
                 {
-                    /*
-                     //iterate over valuse - which are list of the id's of the server
-                     Dictionary<string, List<string>>.ValueCollection valueColl = myDictonary.Values;
-                     foreach (List<string> list in valueColl)
-                     {
-                         foreach (var flightId in list)
-                         {
-                             if(flightId == id)
-                             {
-
-                                 Servers server = 
-                             }
-                         }
-
-                     }
-                     */
-
-
+                    
                     foreach (KeyValuePair<string, List<string>> kvp in myDictonary)
                     {
                         List<string> list = kvp.Value;
-                       // foreach (List<string> list in kvp.Value)
-                        //{
+                     
                             foreach (var flightId in list)
                             {
                                 if (flightId == id)
                                 {
 
                                     Servers server = memoryCache.Get(kvp.Key) as Servers;
-                                     //send get request to server with specific ID
+                                    
+                                //send get request to server with specific ID
                                      FlightPlan flightPlan = new FlightPlan();
                                     string param = "/api/FlightPlan/";
                                     flightPlan =  await GetFlightPlanByIdFromServer(server, param +  flightId);
+
                                 return flightPlan;
                                 }
                             }
-
-                       // }
                     }
-
-
-
-
                 }
-
             }
             return fp;
-
-
         }
             
         // POST: api/FlightPlan
