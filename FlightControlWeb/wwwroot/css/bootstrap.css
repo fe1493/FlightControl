@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  margin: 0;
+    margin: 0;
 }
 
 article,
@@ -1517,13 +1517,14 @@ pre code {
             flex: 0 0 91.666667%;
     max-width: 91.666667%;
   }
-  .col-md-12 {
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 0 100%;
+    .col-md-12 {
+        -webkit-box-flex: 0;
+        -webkit-flex: 0 0 100%;
         -ms-flex: 0 0 100%;
-            flex: 0 0 100%;
-    max-width: 100%;
-  }
+        flex: 0 0 100%;
+        max-width: 100%;
+
+    }
   .pull-md-0 {
     right: auto;
   }

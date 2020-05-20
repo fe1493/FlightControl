@@ -1,29 +1,4 @@
-﻿
-function addServer() {
-    const serverURL = document.getElementById("serverId");
-    let myServer = {
-        ServerId: 21,
-        ServerURL: serverURL.value.trim()
-    };
-    fetch('api/server', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(myServer)
-    })
-        .then(response => response.json())
-        .then(() => {
-            serverURL.value = '';
-        })
-        .catch(error => console.error('Unable to add item.', error));
-
-
-
-}
-
-let myPic;
+﻿let myPic;
 var airplansDic = {};
 var currentPath;
 
@@ -34,27 +9,46 @@ require([
     "esri/layers/GraphicsLayer",
     "esri/symbols/PictureMarkerSymbol"
 ], function (Map, MapView, Graphic, GraphicsLayer, PictureMarkerSymbol) {
-
+     
     var map = new Map({
         basemap: "streets"
     });
+   
+        
 
     var view = new MapView({
         container: "map",
         map: map,
-        center: [32.00, 34.02700],
-        zoom: 4
+        center: [33.80, 32.2700],
+        zoom: 8
     });
+        
+            var graphicsLayer = new GraphicsLayer();
+        map.add(graphicsLayer);
+        
 
-    var graphicsLayer = new GraphicsLayer();
-    map.add(graphicsLayer);
+    //event of click on airplan        
+        view.on("click", function (evt) {
+            var screenPoint = evt.screenPoint;
+            view.hitTest(screenPoint)
+                .then(function (response) {
+                    
+                    var airplanClicked = response.results[0].graphic.attributes.name;
+                    showFlightDetails(airplanClicked);
+                });
+        });
+        
+        
+
+
+        
 
     var airplanPicture = new PictureMarkerSymbol({
         url: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png",
         width: "50px",
         height: "50px"
     });
-    myPic = airplanPicture;
+        myPic = airplanPicture;
 
         function drawSegments(segments) {
             let i = 0;
@@ -71,8 +65,9 @@ require([
                 paths: [
                 ]
             };
+           
             for (i = 0; i < segments.length; i++) {
-                myPolyline.paths.push([segments[i]["lat"], segments[i]["lon"]]);
+                myPolyline.paths.push([segments[i]["longitude"], segments[i]["latitude"]]);   
             }
             polylineGraphic.geometry = myPolyline;
             polylineGraphic.symbol = simpleLineSymbol;
@@ -83,15 +78,14 @@ require([
 
         }
         function removeSegments() {
-            graphicsLayer.remove(currentPath);
-            console.log("in remve");
-            
+            graphicsLayer.remove(currentPath);            
         }
-        
+       
 
 
     function addPlan(lat, lon, id) {
         var airplanGraphic = new Graphic();
+
         airplanGraphic.attributes = {
             name: id,
         };
@@ -106,7 +100,9 @@ require([
 
         airplanGraphic.geometry = point;
         airplanGraphic.symbol = myPic;
-    }
+
+        }
+      
         
 
     function updatePlan(lat, lon, id) {
@@ -137,16 +133,8 @@ function addNewPlan() {
     const k = Number(lon.value);
     addPlan(l, k, i);
     const lq = [];
-    var seg1 = { "lat": 32, "lon": 32 };
-    var seg2 = { "lat": 46, "lon": 21 };
-    var seg3 = { "lat": 45, "lon": 36 };
-    var seg4 = { "lat": 13, "lon": 55 };
-    lq.push(seg1);
-    lq.push(seg2);
-    lq.push(seg3);
-    lq.push(seg4);
 
-    drawSegments(lq);
+
 }
 function drawPlanPath(segments) {
     drawSegments(segments);
@@ -157,14 +145,12 @@ function hidePath() {
 
 
 
-function updatePlanOnMap() {
-
-    var lat = document.getElementById("latitude");
-    var lon = document.getElementById("longitude");
-    var id = document.getElementById("planId");
-    const i = id.value;
-    const l = Number(lat.value);
-    const k = Number(lon.value);
-    updatePlan(l, k, i);
+function updatePlanOnMap(latitude, longitude, id) {
+    updatePlan(latitude, longitude, id);
 
 }
+function showFlightDetails(id) {
+    getFlightPlan(id);
+
+}
+

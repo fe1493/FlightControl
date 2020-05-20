@@ -12,7 +12,6 @@
 
 
 	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/themes/light/main.css">
 	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
@@ -20,6 +19,7 @@
 	<script src="js/map.js" asp-append-version="true"></script>
 	<script src="js/main.js"></script>
 	<script src="js/jquery.min.js"></script>
+	<script src="js/details.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 
 </head>
@@ -28,12 +28,57 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-8">
-				<div class="row">
-					<div id="map"></div>
+				<div id="map"></div>
 
-					<div class="col-md-12">
+				<div class="row">
+					<br />
+					<div class="col-md-12" style="border:solid;background-color:antiquewhite">
+						<h3 style="text-align:center">
+							Flight Details
+						</h3>
+						<div class="row">
+							<div class="col-md-4">
+								<span id="property" class="badge badge-default">Flight Company</span>
+								<label id="cmpny" class="badge-pill"></label>
+							</div>
+							<div class="col-md-4">
+								<span id="property" class="badge badge-default">Initial Location</span>
+								<span>Latitude:</span>
+								<label id="iniloclat"></label>
+								<br />
+								<span id="lonIni">Longitude:</span>
+								<label id="iniloclon" class="badge-pill"></label>
+								
+							</div>
+							<div class="col-md-4">
+								<span id="property" class="badge badge-default">Departure</span>
+								<label id="dep" class="badge-pill"></label>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-md-4">
+								<span id="property" class="badge badge-default">Number of Passengers</span>
+								<label id="psng" class="badge-pill"></label>
+							</div>
+							<div class="col-md-4">
+								<span id="property" class="badge badge-default">Final Location</span>
+								<span>Latitude:</span>
+								<label id="finloclat"></label>
+								<br />
+								<span id="lonFin">Longitude:</span>
+								<label id="finloclon" class="badge-pill"></label>
+							</div>
+							<div class="col-md-4">
+								<span id="property" class="badge badge-default">Arrival</span>
+								<label id="arvl" class="badge-pill"></label>
+							</div>
+						</div>
+						<br />
 					</div>
+
 				</div>
+
 			</div>
 			<div class="col-md-4">
 				<table id="tbid" class="table table-hover">
@@ -49,45 +94,19 @@
 								Is external
 							</th>
 							<th>
-								
+
 							</th>
 						</tr>
 					</thead>
 					<tbody>
-
-
 					</tbody>
 				</table>
 
 
 			</div>
 		</div>
-		</div>
-	<div id="server">
-		<h3>Add Server</h3>
-		<form id="flightplanform" action="javascript:void(0);" method="POST" onsubmit="addflightplan()">
-			<input type="text" id="serverId">
-			<input type="submit" value="Add"><br />
 
-		</form>
-		<button id="btn1" onclick="addflightplan()">Add flight plan</button>
-		<button id="btn1" onclick="getFlights()">Get flights</button><br />
-		<p>enter latitude an longitude for the airplan and update or draw new plan</p>
-		<input type="text" id="longitude" value="30">
-		<input type="text" id="latitude" value="32">
-		<input type="text" id="planId" value="id">
-		<button id="btn3" onclick="addNewPlan()">Draw airplan</button>
-		<button id="btn4" onclick="updatePlanOnMap()">update airplan</button>
-		<button id="btn5" onclick="hidePath()">hide path of the flight</button>
-
-		<div class="row">
-			<div class="col-md-12">
-			</div>
-		</div>
 	</div>
 
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/scripts.js"></script>
 </body>
 </html>
