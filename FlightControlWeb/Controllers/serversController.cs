@@ -12,13 +12,13 @@ namespace FlightControlWeb.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class ServersController : ControllerBase
+    public class serversController : ControllerBase
     {
 
         private IServerManager serverManager;
         private IMemoryCache memoryCache;
 
-        public ServersController(IServerManager manager, IMemoryCache cache)
+        public serversController(IServerManager manager, IMemoryCache cache)
         {
             serverManager = manager;
             memoryCache = cache;
@@ -28,7 +28,7 @@ namespace FlightControlWeb.Controllers
         [HttpGet]
         public IEnumerable<Servers> Get()
         {
-             
+
             List<Servers> serverslist = new List<Servers>();
 
 
@@ -43,7 +43,7 @@ namespace FlightControlWeb.Controllers
                 serverslist.Add(server);
             }
             return serverslist;
-            
+
         }
 
         // POST:    /api/servers
