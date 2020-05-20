@@ -16,7 +16,6 @@ namespace FlightControlWeb.Controllers
     {
         private IFlightManager flightManager;
         private IMemoryCache memoryCache;
-        private MyServerManager myServerManager;
 
         public FlightsController(IFlightManager manager, IMemoryCache cache)
         {
@@ -29,12 +28,26 @@ namespace FlightControlWeb.Controllers
         public async Task<List<Flights>> Func(Servers servers)
         {
             HttpRequestClass httpRequestClass = new HttpRequestClass();
+            string param = "/api/Flight";
+            var response = await httpRequestClass.makeRequest(servers.ServerURL + param);
+            List<Flights> fl = new List<Flights>();
+            fl = JsonConvert.DeserializeObject<List<Flights>>(response);
+            return fl;
+
+            /*
             // string response = await httpRequestClass.makeRequest(servers.ServerURL);
+           
+            
             List<Flights> fl = await httpRequestClass.makeRequest(servers.ServerURL);
+
+
+
          //   Console.WriteLine(response);
           //  List<Flights> fl = new List<Flights>();
           //  fl = JsonConvert.DeserializeObject<List<Flights>>(response);
             return fl;
+
+    */
         }
 
 
@@ -44,30 +57,77 @@ namespace FlightControlWeb.Controllers
         {
             List<Flights> flightsList = new List<Flights>();
 
+           
+            
+            
             if (Request.Query.ContainsKey("sync_all"))
             {
                 List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
-               
+
+     
+
+
+
+
+                //for each id of server -> insert all id's of all its flights into a List/array
+                //put map in cache
+                //fix func of flightplan so will work with servers?
+
+
                 foreach (var id in serverIdKeysList)
                 {
                     Servers server = memoryCache.Get(id) as Servers;
                     List<Flights> fl = new List<Flights>();
                     fl = await Func(server);
 
+                    List<string> flightsKeysList = new List<string>();
+                    foreach (var flight in fl)
+                    {
+                        flightsKeysList.Add(flight.FlightId);
+                    }
+
+                        //create map/dictonary
+                        //key = Id of server, value = list of all id's of servers flights
+                        Dictionary<string, List<string>> myDictonary = new Dictionary<string, List<string>>();
+
+                    if (!memoryCache.TryGetValue("keyOfMyDictonary", out myDictonary))
+                    {
+                        myDictonary = new Dictionary<string, List<string>>();
+                        myDictonary.Add(id, flightsKeysList);
+                        memoryCache.Set("keyOfMyDictonary", myDictonary);
+                    }
+                    else
+                    {
+                        myDictonary.Add(id, flightsKeysList);
+                        memoryCache.Remove("keyOfMyDictonary");
+                        memoryCache.Set("keyOfMyDictonary", myDictonary);
+
+                    }
+
+
                     flightsList.AddRange(fl);
                 }
-                return flightsList;
+                
             }
+            //list of keys of flight plans in our server
             List<string> fpListOfKeys = memoryCache.Get("flightListKeys") as List<string>;
-
-            foreach (var id in fpListOfKeys)
+            if(fpListOfKeys != null)
             {
-                FlightPlan fp;
+                foreach (var id in fpListOfKeys)
+                {
+                    FlightPlan fp;
 
-                fp = memoryCache.Get<FlightPlan>(id);
-                Flights flight = flightManager.CreateUpdatedFlight(fp, relative_to);
-                flightsList.Add(flight);
+                    fp = memoryCache.Get<FlightPlan>(id);
+                    Flights flight = flightManager.CreateUpdatedFlight(fp, relative_to);
+                    
+                    if(flight!= null)
+                    {
+                        flightsList.Add(flight);
+
+                    }
+                }
             }
+           
             return flightsList;
         }
     }
