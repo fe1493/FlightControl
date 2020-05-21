@@ -1,4 +1,6 @@
-﻿let flightplan = {"companyname":"EL-AL" }
+﻿let flightKeys = [];
+
+let flightplan = {"companyname":"EL-AL" }
 function addflightplan() {
 
     let postOption = preparePost(flightplan);
@@ -7,35 +9,45 @@ function addflightplan() {
         catch(error => console.log(error))
 
 }
-let i =0
+let currentFlights = "";
 function getFlights() {
-    var d = new Date();
-    let currentTime = d.getFullYear() + "-" + ("00" + (d.getMonth() + 1)).slice(-2) +
-        "-" + ("00" + d.getDate()).slice(-2) + "T" + ("00" + d.getHours()).slice(-2) +
-        ":" + ("00" + d.getMinutes()).slice(-2) + ":" + ("00" + d.getSeconds()).slice(-2) + "Z";
-    console.log(currentTime);
-    let productsUrl = "http://ronyut.atwebpages.com/ap2/api/Flights?relative_to=" + currentTime;
-    $.getJSON(productsUrl, function (data) {
-        console.log(data);
+    let currentTime = getCurrentTime();
+    let url = "http://ronyut.atwebpages.com/ap2/api/Flights?relative_to=" + currentTime;
+    $.getJSON(url, function (data) {
         data.forEach(function (flight) {
             $(flight).each(function (index, value) {
                 addFlightsTable(value);
             })
         })
+        $('#tbid tbody').empty();
+        $('#tbid tbody').append(currentFlights);
+        currentFlights="";
     });
 }
 
 
-
 function addFlightsTable(flight) {
-    $("#tbid > tbody:last-child").append("<tr><td>" + flight.flightId + "</td>" +
-        "<td>" + flight.companyName + "</td>" +
-        "<td>" + flight.isExternal + "</td></tr>");
-
+    currentFlights += "<tr><td>" + flight.flight_id + "</td>" +
+    "<td>" + flight.company_name + "</td>" +
+    "<td>" + flight.is_external + "</td>";
+    if (!flight.is_external){
+        var trash = "<td>";
+        trash += "<input class=\"trash\" type=\"image\" src=\"img/trash2.png\"";
+        trash += "onclick=\"deleteFlight(this)\"></td></tr>";
+        currentFlights += trash;
+    }
+    else {
+        currentFlights += "</tr>";
+    }
 }
 
+function deleteFlight(row) {
+    // send to server to delete this flight
+    // ***********************************************************
+    var p = row.parentNode.parentNode;
+        p.parentNode.removeChild(p);
+}
 
-				
 function preparePost(flightplan) {
     let flighplanAsSrt = JSON.stringify(flightplan);
     return {
@@ -48,6 +60,21 @@ function preparePost(flightplan) {
     }
 }
 
+function flightsTable() {
+    setInterval(function() {
+        getFlights();
+    }, 4000);
+}
+
+// Get Current Time
+function getCurrentTime(){
+    let d = new Date();
+    //let x = d.toISOString();
+    let currentTime = d.getFullYear() + "-" + ("00" + (d.getMonth() + 1)).slice(-2) +
+        "-" + ("00" + d.getDate()).slice(-2) + "T" + ("00" + d.getHours()).slice(-2) +
+        ":" + ("00" + d.getMinutes()).slice(-2) + ":" + ("00" + d.getSeconds()).slice(-2) + "Z";
+    return currentTime;
+}
 
 
 
