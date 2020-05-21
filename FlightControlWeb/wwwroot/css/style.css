@@ -3,14 +3,12 @@
     width: 1000px;
 }
 
-#property {
-    font-size: large;
+.trash {
+    height: 20px;
+    width: 20px;
+    align-items: center;
 }
 
-#lonIni {
-    margin-left: 145px;
-}
-
-#lonFin {
-    margin-left: 136px;
+#tbid {
+    text-align: center;
 }

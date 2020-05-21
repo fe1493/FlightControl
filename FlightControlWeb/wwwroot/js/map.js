@@ -103,8 +103,6 @@ require([
 
     }
 
-
-
     function updatePlan(lat, lon, id) {
         var apg = airplansDic[id];
         var point = {
@@ -119,8 +117,6 @@ require([
     window.updatePlan = updatePlan;
     window.drawSegments = drawSegments;
     window.removeSegments = removeSegments;
-
-
 });
 
 function addNewPlan(latitude, longitude, id) {
