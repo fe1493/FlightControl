@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace FlightControlWeb.Models
 {
-    public class Server
+    public class Servers
     {
-        public int ServerId { get; set; }
-        public string ServerURL { get; set; }
+        public string ServerId { get; set; }
+        public string ServerURL { get; set; } 
     }
 }

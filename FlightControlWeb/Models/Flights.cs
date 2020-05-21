@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
-    public class Flight
+    public class Flights
     {
         public string FlightId { get; set; }
         public double Longitude { get; set; }

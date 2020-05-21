@@ -1,7 +1,7 @@
-﻿function getFlightPlan(id) {
+﻿ function getFlightPlan(id) {
     var url = "../api/flightplan/";
-    var urlPath = url.concat(id.toString());
-    $.getJSON(urlPath, function (data) {
+     var urlPath = url.concat(id.toString());
+     $.getJSON(urlPath, async function (data) {
         let company = document.getElementById("cmpny");
         company.innerHTML = data["companyName"];
 
@@ -23,7 +23,7 @@
             flightTime += data["segments"][i]["timespanSeconds"];
         }
         setArrivalTime(date, flightTime);
-        setFinalLocation(flightSegments[i-1]);
+        setFinalLocation(flightSegments[i - 1]);
 
 
     });

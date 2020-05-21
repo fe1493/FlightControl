@@ -8,15 +8,15 @@ namespace FlightControlWeb.Models
     public class MyServerManager: IServerManager
     {
    
-            List<Server> servers = new List<Server>();
-            public Server GetServer(int id)
+            List<Servers> servers = new List<Servers>();
+            public Servers GetServer(string id)
             {
                 return servers.Find(item => item.ServerId == id);
 
 
 
             }
-            public void AddServer(Server server)
+            public void AddServer(Servers server)
             {
                 servers.Add(server);
             }
