@@ -40,14 +40,14 @@ namespace FlightControlWeb.Controllers
         [HttpGet]
         public async Task<IEnumerable<Flights>> GetFlights(DateTime relative_to)
         {
-            List<Flights> flightsList = new List<Flights>();           
+            List<Flights> flightsList = new List<Flights>();
             if (Request.Query.ContainsKey("sync_all"))
             {
                 List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
-               
+
                 //for each id of server -> insert all id's of all its flights into a List/array
                 //put map in cache
-               
+
 
 
                 foreach (var id in serverIdKeysList)
@@ -62,9 +62,9 @@ namespace FlightControlWeb.Controllers
                         flightsKeysList.Add(flight.FlightId);
                     }
 
-                        //create map/dictonary
-                        //key = Id of server, value = list of all id's of servers flights
-                        Dictionary<string, List<string>> myDictonary = new Dictionary<string, List<string>>();
+                    //create map/dictonary
+                    //key = Id of server, value = list of all id's of servers flights
+                    Dictionary<string, List<string>> myDictonary = new Dictionary<string, List<string>>();
 
                     if (!memoryCache.TryGetValue("keyOfMyDictonary", out myDictonary))
                     {
@@ -83,11 +83,11 @@ namespace FlightControlWeb.Controllers
 
                     flightsList.AddRange(fl);
                 }
-                
+
             }
             //list of keys of flight plans in our server
             List<string> fpListOfKeys = memoryCache.Get("flightListKeys") as List<string>;
-            if(fpListOfKeys != null)
+            if (fpListOfKeys != null)
             {
                 foreach (var id in fpListOfKeys)
                 {
@@ -95,15 +95,15 @@ namespace FlightControlWeb.Controllers
 
                     fp = memoryCache.Get<FlightPlan>(id);
                     Flights flight = flightManager.CreateUpdatedFlight(fp, relative_to);
-                    
-                    if(flight!= null)
+
+                    if (flight != null)
                     {
                         flightsList.Add(flight);
 
                     }
                 }
             }
-           
+
             return flightsList;
         }
     }

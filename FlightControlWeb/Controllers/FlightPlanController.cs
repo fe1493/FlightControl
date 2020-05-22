@@ -40,7 +40,7 @@ namespace FlightControlWeb.Controllers
             fp = JsonConvert.DeserializeObject<FlightPlan>(result);
             return fp;
         }
-       
+
         // GET: api/FlightPlan/5
         [HttpGet("{id}")]
         public async Task<FlightPlan> GetFlightPlan(string id)
@@ -60,32 +60,32 @@ namespace FlightControlWeb.Controllers
                 }
                 else
                 {
-                    
+
                     foreach (KeyValuePair<string, List<string>> kvp in myDictonary)
                     {
                         List<string> list = kvp.Value;
-                     
-                            foreach (var flightId in list)
-                            {
-                                if (flightId == id)
-                                {
 
-                                    Servers server = memoryCache.Get(kvp.Key) as Servers;
-                                    
+                        foreach (var flightId in list)
+                        {
+                            if (flightId == id)
+                            {
+
+                                Servers server = memoryCache.Get(kvp.Key) as Servers;
+
                                 //send get request to server with specific ID
-                                     FlightPlan flightPlan = new FlightPlan();
-                                    string param = "/api/FlightPlan/";
-                                    flightPlan =  await GetFlightPlanByIdFromServer(server, param +  flightId);
+                                FlightPlan flightPlan = new FlightPlan();
+                                string param = "/api/FlightPlan/";
+                                flightPlan = await GetFlightPlanByIdFromServer(server, param + flightId);
 
                                 return flightPlan;
-                                }
                             }
+                        }
                     }
                 }
             }
             return fp;
         }
-            
+
         // POST: api/FlightPlan
         [HttpPost]
         public void Post([FromBody] FlightPlan flightPlan)
@@ -93,7 +93,7 @@ namespace FlightControlWeb.Controllers
             string flightPlanId = flightManager.CreateIdentifier(flightPlan);
             flightPlan.FlightPlanId = flightPlanId;
             memoryCache.Set(flightPlan.FlightPlanId, flightPlan);
-            
+
             List<string> fpKeys = new List<string>();
             if (!memoryCache.TryGetValue("flightListKeys", out fpKeys))
             {
@@ -106,7 +106,7 @@ namespace FlightControlWeb.Controllers
                 fpKeys.Add(flightPlan.FlightPlanId);
                 memoryCache.Remove("flightListKeys");
                 memoryCache.Set("flightListKeys", fpKeys);
-                
+
             }
         }
 
@@ -114,10 +114,10 @@ namespace FlightControlWeb.Controllers
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-           //check if other servers have the id and erase it?
+            //check if other servers have the id and erase it?
             List<string> fpKeys = memoryCache.Get("flightListKeys") as List<string>;
-          
-            
+
+
             fpKeys.Remove(id);
 
             memoryCache.Remove(id);

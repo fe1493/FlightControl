@@ -9,7 +9,7 @@ using System.Net.Http;
 
 namespace FlightControlWeb.Models
 {
-    public  class HttpRequestClass
+    public class HttpRequestClass
     {
         public async Task<dynamic> makeRequest(string url)
         {
