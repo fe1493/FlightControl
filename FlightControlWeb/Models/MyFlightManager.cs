@@ -87,19 +87,21 @@ namespace FlightControlWeb.Models
             {
                 char c = Char.ToUpper(companyStr[j % companyNmLen]);
                 if (c >= 'A' && c <= 'Z')
-                { 
+                {
                     builder.Append(c);
                     j++;
-                } 
-                else { i--;
+                }
+                else
+                {
+                    i--;
                     j++;
                 }
             }
-            for(int i = 0; i < length - 3; i++)
+            for (int i = 0; i < length - 3; i++)
             {
                 builder.Append(random.Next(0, 10));
             }
-            
+
             return builder.ToString();
         }
     }

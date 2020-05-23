@@ -18,7 +18,8 @@ namespace FlightControlWeb.Models
         [JsonProperty("company_name")]
         [JsonPropertyName("company_name")]
         public string CompanyName { get; set; }
-        public class Location {
+        public class Location
+        {
             public double Longitude { get; set; }
             public double Latitude { get; set; }
             [JsonProperty("date_time")]
@@ -29,6 +30,5 @@ namespace FlightControlWeb.Models
         [JsonPropertyName("initial_location")]
         public Location InitialLocation { get; set; }
         public List<Segment> Segments { get; set; }
-
     }
 }

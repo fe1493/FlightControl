@@ -1,18 +1,19 @@
-﻿ function getFlightPlan(id) {
-    var url = "../api/flightplan/";
+﻿function getFlightPlan(id) {
+    var url = baseURL + "/api/flightplan/";
      var urlPath = url.concat(id.toString());
-     $.getJSON(urlPath, async function (data) {
+     console.log(urlPath);
+     $.getJSON(urlPath, function (data) {
         let company = document.getElementById("cmpny");
-        company.innerHTML = data["companyName"];
+        company.innerHTML = data["company_name"];
 
         let passengers = document.getElementById("psng")
         passengers.innerHTML = data["passengers"];
 
-        let initialLocation = data["initialLocation"];
+        let initialLocation = data["initial_location"];
         setInitialLocation(initialLocation);
 
         var date = new Date();
-        date.toUTCString(initialLocation["dateTime"]);
+        date.toUTCString(initialLocation["date_time"]);
         setDepartureTime(date);
 
         var flightTime = 0;
@@ -20,7 +21,7 @@
         flightSegments.unshift(initialLocation);
         drawPlanPath(flightSegments);
         for (var i = 1; i < flightSegments.length; i++) {
-            flightTime += data["segments"][i]["timespanSeconds"];
+            flightTime += data["segments"][i]["timespan_seconds"];
         }
         setArrivalTime(date, flightTime);
         setFinalLocation(flightSegments[i - 1]);

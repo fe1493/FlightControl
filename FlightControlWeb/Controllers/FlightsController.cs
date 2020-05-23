@@ -28,7 +28,7 @@ namespace FlightControlWeb.Controllers
         public async Task<List<Flight>> Func(Server servers, string relativeTime)
         {
             HttpRequestClass httpRequestClass = new HttpRequestClass();
-            string param = "/api/flights?relative_to="+relativeTime;
+            string param = "/api/flights"+relativeTime;
             var response = await httpRequestClass.makeRequest(servers.ServerURL + param);
             List<Flight> flightsList = new List<Flight>();
             flightsList = JsonConvert.DeserializeObject<List<Flight>>(response);
@@ -45,6 +45,8 @@ namespace FlightControlWeb.Controllers
             {
                 return null;
             }
+            //set the urc time zone
+            relativeTo = relativeTo.ToUniversalTime();
 
             List<Flight> flightsList = new List<Flight>();
             if (Request.Query.ContainsKey("sync_all"))
@@ -80,7 +82,7 @@ namespace FlightControlWeb.Controllers
             return flightsList;
         }
 
-        public async Task<IEnumerable<Flight>> GetFlightsRemoteServers(List<string> serverIdKeysList, string relativeTimeStr)
+        public async Task<IEnumerable<Flight>> GetFlightsRemoteServers(List<string> serverIdKeysList, string relativeTime)
         {
             List<Flight> flightsList = new List<Flight>();
             //for each id of server -> insert all id's of all its flights into a List/array
@@ -88,7 +90,7 @@ namespace FlightControlWeb.Controllers
             foreach (var id in serverIdKeysList)
             {
                 Server server = memoryCache.Get(id) as Server;
-                flightsList.AddRange(await Func(server, relativeTimeStr));
+                flightsList.AddRange(await Func(server, relativeTime));
 
                 List<string> flightsKeysList = new List<string>();
                 foreach (var flight in flightsList)
