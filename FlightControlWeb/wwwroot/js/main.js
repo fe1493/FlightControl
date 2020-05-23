@@ -1,6 +1,6 @@
 ﻿let flightKeys = [];
 
-let flightplan = {"companyname":"EL-AL" }
+let baseURL = "https://localhost:44389";
 function addflightplan() {
 
     let postOption = preparePost(flightplan);
@@ -12,7 +12,7 @@ function addflightplan() {
 let currentFlights = "";
 function getFlights() {
     let currentTime = getCurrentTime();
-    let url = "http://ronyut.atwebpages.com/ap2/api/Flights?relative_to=" + currentTime;
+    let url = baseURL+ "/api/Flights?relative_to=" + currentTime;
     $.getJSON(url, function (data) {
         data.forEach(function (flight) {
             $(flight).each(function (index, value) {
@@ -39,13 +39,14 @@ function addFlightsTable(flight) {
     else {
         currentFlights += "</tr>";
     }
+    drawPlan(flight.flight_id, flight.latitude, flight.longitude);
 }
 
 function deleteFlight(row) {
     // send to server to delete this flight
     // ***********************************************************
     var p = row.parentNode.parentNode;
-        p.parentNode.removeChild(p);
+    p.parentNode.removeChild(p);
 }
 
 function preparePost(flightplan) {

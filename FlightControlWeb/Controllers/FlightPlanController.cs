@@ -29,7 +29,7 @@ namespace FlightControlWeb.Controllers
 
 
 
-        public async Task<FlightPlan> GetFlightPlanByIdFromServer(Servers servers, string param)
+        public async Task<FlightPlan> GetFlightPlanByIdFromServer(Server servers, string param)
         {
 
             HttpRequestClass httpRequestClass = new HttpRequestClass();
@@ -70,7 +70,7 @@ namespace FlightControlWeb.Controllers
                             if (flightId == id)
                             {
 
-                                Servers server = memoryCache.Get(kvp.Key) as Servers;
+                                Server server = memoryCache.Get(kvp.Key) as Server;
 
                                 //send get request to server with specific ID
                                 FlightPlan flightPlan = new FlightPlan();
