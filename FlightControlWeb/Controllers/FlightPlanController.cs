@@ -29,7 +29,7 @@ namespace FlightControlWeb.Controllers
 
 
 
-        public async Task<FlightPlan> GetFlightPlanByIdFromServer(Servers servers, string param)
+        public async Task<FlightPlan> GetFlightPlanByIdFromServer(Server servers, string param)
         {
 
             HttpRequestClass httpRequestClass = new HttpRequestClass();
@@ -70,7 +70,7 @@ namespace FlightControlWeb.Controllers
                             if (flightId == id)
                             {
 
-                                Servers server = memoryCache.Get(kvp.Key) as Servers;
+                                Server server = memoryCache.Get(kvp.Key) as Server;
 
                                 //send get request to server with specific ID
                                 FlightPlan flightPlan = new FlightPlan();
@@ -88,7 +88,7 @@ namespace FlightControlWeb.Controllers
 
         // POST: api/FlightPlan
         [HttpPost]
-        public void Post([FromBody] FlightPlan flightPlan)
+        public ActionResult<string> Post([FromBody] FlightPlan flightPlan)
         {
             string flightPlanId = flightManager.CreateIdentifier(flightPlan);
             flightPlan.FlightPlanId = flightPlanId;
@@ -104,23 +104,30 @@ namespace FlightControlWeb.Controllers
             else
             {
                 fpKeys.Add(flightPlan.FlightPlanId);
-                memoryCache.Remove("flightListKeys");
-                memoryCache.Set("flightListKeys", fpKeys);
-
             }
+            return Ok(flightPlanId);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public ActionResult<FlightPlan> Delete(string id)
         {
             //check if other servers have the id and erase it?
             List<string> fpKeys = memoryCache.Get("flightListKeys") as List<string>;
 
+            FlightPlan fp = new FlightPlan();
+            if (!memoryCache.TryGetValue(id, out fp))
+            {
+                return BadRequest();
+            }
+            else
+            {
+                fpKeys.Remove(id);
+                memoryCache.Remove(id);
+                return Ok();
+            }
 
-            fpKeys.Remove(id);
 
-            memoryCache.Remove(id);
 
         }
 

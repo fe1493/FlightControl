@@ -9,7 +9,7 @@ namespace FlightControlWeb.Models
     public class MyFlightManager : IFlightManager
     {
         //the function finds the current location of the flightplan according to the given relative time
-        public Flights CreateUpdatedFlight(FlightPlan flightPlan, DateTime relativeTime)
+        public Flight CreateUpdatedFlight(FlightPlan flightPlan, DateTime relativeTime)
         {
             double secondsTimeSpan = SecondsGap(flightPlan.InitialLocation.DateTime, relativeTime);
             if (secondsTimeSpan < 0)
@@ -39,7 +39,7 @@ namespace FlightControlWeb.Models
             Point p2 = new Point { X = segments[i].Longitude, Y = segments[i].Latitude };
             Line line = new Line { StartPoint = p1, EndPoint = p2 };
             Point currentPoint = line.GetPointOnLine(secondsAtCurrentSegment / segments[i].TimespanSeconds);
-            Flights updatedFlight = CreateCurrentFlight(flightPlan, currentPoint, relativeTime);
+            Flight updatedFlight = CreateCurrentFlight(flightPlan, currentPoint, relativeTime);
             return updatedFlight;
         }
 
@@ -60,9 +60,9 @@ namespace FlightControlWeb.Models
             segment.TimespanSeconds = 0;
             return segment;
         }
-        public Flights CreateCurrentFlight(FlightPlan flightPlan, Point currentLocation, DateTime relativeTime)
+        public Flight CreateCurrentFlight(FlightPlan flightPlan, Point currentLocation, DateTime relativeTime)
         {
-            Flights flight = new Flights();
+            Flight flight = new Flight();
             flight.CompanyName = flightPlan.CompanyName;
             flight.FlightId = flightPlan.FlightPlanId;
             flight.IsExternal = false;

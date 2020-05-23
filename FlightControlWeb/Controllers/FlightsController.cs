@@ -25,64 +25,38 @@ namespace FlightControlWeb.Controllers
 
 
 
-        public async Task<List<Flights>> Func(Servers servers)
+        public async Task<List<Flight>> Func(Server servers, string relativeTime)
         {
             HttpRequestClass httpRequestClass = new HttpRequestClass();
-            string param = "/api/Flight";
+            string param = "/api/flights?relative_to="+relativeTime;
             var response = await httpRequestClass.makeRequest(servers.ServerURL + param);
-            List<Flights> fl = new List<Flights>();
-            fl = JsonConvert.DeserializeObject<List<Flights>>(response);
-            return fl;
+            List<Flight> flightsList = new List<Flight>();
+            flightsList = JsonConvert.DeserializeObject<List<Flight>>(response);
+            return flightsList;
         }
 
 
 
         [HttpGet]
-        public async Task<IEnumerable<Flights>> GetFlights(DateTime relative_to)
+        public async Task<IEnumerable<Flight>> GetFlights([FromQuery(Name = "relative_to")]string relativeTime)
         {
-            List<Flights> flightsList = new List<Flights>();
+            DateTime relativeTo;
+            if (!DateTime.TryParse(relativeTime, out relativeTo))
+            {
+                return null;
+            }
+
+            List<Flight> flightsList = new List<Flight>();
             if (Request.Query.ContainsKey("sync_all"))
             {
                 List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
-
-                //for each id of server -> insert all id's of all its flights into a List/array
-                //put map in cache
-
-
-
-                foreach (var id in serverIdKeysList)
+                if (serverIdKeysList != null)
                 {
-                    Servers server = memoryCache.Get(id) as Servers;
-                    List<Flights> fl = new List<Flights>();
-                    fl = await Func(server);
-
-                    List<string> flightsKeysList = new List<string>();
-                    foreach (var flight in fl)
-                    {
-                        flightsKeysList.Add(flight.FlightId);
-                    }
-
-                    //create map/dictonary
-                    //key = Id of server, value = list of all id's of servers flights
-                    Dictionary<string, List<string>> myDictonary = new Dictionary<string, List<string>>();
-
-                    if (!memoryCache.TryGetValue("keyOfMyDictonary", out myDictonary))
-                    {
-                        myDictonary = new Dictionary<string, List<string>>();
-                        myDictonary.Add(id, flightsKeysList);
-                        memoryCache.Set("keyOfMyDictonary", myDictonary);
-                    }
-                    else
-                    {
-                        myDictonary.Add(id, flightsKeysList);
-                        memoryCache.Remove("keyOfMyDictonary");
-                        memoryCache.Set("keyOfMyDictonary", myDictonary);
-
-                    }
-
-
-                    flightsList.AddRange(fl);
+                    IEnumerable<Flight> remoteflights;
+                    remoteflights = await GetFlightsRemoteServers(serverIdKeysList, relativeTime);
+                    flightsList.AddRange(remoteflights);
                 }
+
 
             }
             //list of keys of flight plans in our server
@@ -94,7 +68,7 @@ namespace FlightControlWeb.Controllers
                     FlightPlan fp;
 
                     fp = memoryCache.Get<FlightPlan>(id);
-                    Flights flight = flightManager.CreateUpdatedFlight(fp, relative_to);
+                    Flight flight = flightManager.CreateUpdatedFlight(fp, relativeTo);
 
                     if (flight != null)
                     {
@@ -103,8 +77,47 @@ namespace FlightControlWeb.Controllers
                     }
                 }
             }
-
             return flightsList;
+        }
+
+        public async Task<IEnumerable<Flight>> GetFlightsRemoteServers(List<string> serverIdKeysList, string relativeTimeStr)
+        {
+            List<Flight> flightsList = new List<Flight>();
+            //for each id of server -> insert all id's of all its flights into a List/array
+            //put map in cache
+            foreach (var id in serverIdKeysList)
+            {
+                Server server = memoryCache.Get(id) as Server;
+                flightsList.AddRange(await Func(server, relativeTimeStr));
+
+                List<string> flightsKeysList = new List<string>();
+                foreach (var flight in flightsList)
+                {
+                    flightsKeysList.Add(flight.FlightId);
+                }
+
+                //create map/dictonary
+                //key = Id of server, value = list of all id's of servers flights
+                Dictionary<string, List<string>> myDictonary = new Dictionary<string, List<string>>();
+
+                if (!memoryCache.TryGetValue("keyOfMyDictonary", out myDictonary))
+                {
+                    myDictonary = new Dictionary<string, List<string>>();
+                    myDictonary.Add(id, flightsKeysList);
+                    memoryCache.Set("keyOfMyDictonary", myDictonary);
+                }
+                else
+                {
+                    myDictonary[id] = flightsKeysList;
+                    memoryCache.Remove("keyOfMyDictonary");
+                    memoryCache.Set("keyOfMyDictonary", myDictonary);
+
+                }
+
+            }
+            return flightsList;
+
+
         }
     }
 }

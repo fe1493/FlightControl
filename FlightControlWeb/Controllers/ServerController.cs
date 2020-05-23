@@ -12,13 +12,13 @@ namespace FlightControlWeb.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class serversController : ControllerBase
+    public class ServersController : ControllerBase
     {
 
         private IServerManager serverManager;
         private IMemoryCache memoryCache;
 
-        public serversController(IServerManager manager, IMemoryCache cache)
+        public ServersController(IServerManager manager, IMemoryCache cache)
         {
             serverManager = manager;
             memoryCache = cache;
@@ -26,19 +26,19 @@ namespace FlightControlWeb.Controllers
         }
         // GET:    /api/servers
         [HttpGet]
-        public IEnumerable<Servers> Get()
+        public IEnumerable<Server> Get()
         {
 
-            List<Servers> serverslist = new List<Servers>();
+            List<Server> serverslist = new List<Server>();
 
 
             List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
 
             foreach (var id in serverIdKeysList)
             {
-                Servers server;
+                Server server;
 
-                server = memoryCache.Get<Servers>(id);
+                server = memoryCache.Get<Server>(id);
 
                 serverslist.Add(server);
             }
@@ -48,7 +48,7 @@ namespace FlightControlWeb.Controllers
 
         // POST:    /api/servers
         [HttpPost]
-        public void Post(Servers server)
+        public void Post(Server server)
         {
             memoryCache.Set(server.ServerId, server);
 
@@ -63,9 +63,6 @@ namespace FlightControlWeb.Controllers
             else
             {
                 serverIdKeysList.Add(server.ServerId);
-                memoryCache.Remove("serverListKeys");
-                memoryCache.Set("serverListKeys", serverIdKeysList);
-
             }
 
         }
@@ -74,12 +71,17 @@ namespace FlightControlWeb.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public ActionResult Delete(string id)
         {
 
             List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
+            if (serverIdKeysList == null)
+            {
+                return BadRequest();
+            }
             serverIdKeysList.Remove(id);
             memoryCache.Remove(id);
+            return Ok();
         }
     }
 }
