@@ -2,25 +2,3 @@
     height: 500px;
     width: 1000px;
 }
-
-.trash {
-    height: 20px;
-    width: 20px;
-    align-items: center;
-}
-
-#tbid {
-    text-align: center;
-}
-
-#property {
-    font-size: large;
-}
-
-#lonIni {
-    margin-left: 145px;
-}
-
-#lonFin {
-    margin-left: 136px;
-}
