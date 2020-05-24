@@ -55,3 +55,30 @@ function setFinalLocation(finalLocation) {
     let finalLocationLon = document.getElementById("finloclon");
     finalLocationLon.innerHTML = finalLocation["longitude"].toFixed(3);
 };
+
+function resetDetails() {
+    let company = document.getElementById("cmpny");
+    company.innerHTML = "";
+
+    let passengers = document.getElementById("psng")
+    passengers.innerHTML = "";
+
+    let initialLocationLat = document.getElementById("iniloclat");
+    initialLocationLat.innerHTML = "";
+
+    let initialLocationLon = document.getElementById("iniloclon");
+    initialLocationLon.innerHTML = "";
+
+    let arrivalTime = document.getElementById("arvl");
+    arrivalTime.innerHTML = "";
+
+    let initialLocationTime = document.getElementById("dep");
+    initialLocationTime.innerHTML = "";
+
+    let finalLocationLat = document.getElementById("finloclat");
+    finalLocationLat.innerHTML = "";
+
+    let finalLocationLon = document.getElementById("finloclon");
+    finalLocationLon.innerHTML = "";
+
+}

@@ -31,11 +31,11 @@ function getFlights() {
 
 
 function addFlightsTable(flight) {
-    currentFlights += "<tr><td>" + flight.flight_id + "</td>" +
+    currentFlights += "<tr onclick=\"rowClicked(this)\"><td>" + flight.flight_id + "</td>" +
     "<td>" + flight.company_name + "</td>" +
     "<td>" + flight.is_external + "</td>";
     if (!flight.is_external){
-        var trash = "<td>";
+        let trash = "<td>";
         trash += "<input class=\"trash\" type=\"image\" src=\"img/trash2.png\"";
         trash += "onclick=\"deleteFlight(this)\"></td></tr>";
         currentFlights += trash;
@@ -45,6 +45,14 @@ function addFlightsTable(flight) {
     }
     drawPlan(flight.flight_id, flight.latitude, flight.longitude);
 }
+
+function rowClicked(row) {
+    let id = row.cells[0].innerHTML;
+    if (id in airplansDic) {
+        showFlightDetails(id);
+    }
+}
+
 
 // delete all the info of the flightplan
 // include the flightplan in the server
@@ -57,6 +65,8 @@ function deleteFlight(row) {
     deleteFlightFromServer(id);
     // delete the row in the flights table
     p.parentNode.removeChild(p);
+    // delete flightId from the dictionary in map.js
+    removePlan(id);
 }
 
 // delete flightplan from the server
@@ -98,6 +108,13 @@ function getCurrentTime(){
         ":" + ("00" + d.getMinutes()).slice(-2) + ":" + ("00" + d.getSeconds()).slice(-2) + "Z";
     return currentTime;
 }
+
+$("#tbid tr.flight").click(function () {
+    let id = $(this)[0].innerHTML;
+    console.log(id)
+});
+
+
 
 
 

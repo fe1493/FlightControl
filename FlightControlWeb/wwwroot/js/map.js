@@ -1,9 +1,9 @@
 ﻿let myPic;
 let myClickedPic;
-var airplansDic = {};
-var currentPath;
-var isPathVisible = false;
-var airplanClicked;
+let airplansDic = {};
+let currentPath;
+let isPathVisible = false;
+let airplanClicked;
 
 require([
     "esri/Map",
@@ -164,13 +164,13 @@ function updatePlanOnMap(latitude, longitude, id) {
 function showFlightDetails(id) {
     hidePath();
     getFlightPlan(id);
-
 }
 //cancel the path drawing on the map the cancel the clicked plan
 function changePlanClicked() {
     if (airplanClicked != null) {
         airplanClicked.graphic.symbol = myPic;
     }
+    resetDetails();
     hidePath();
 }
 //delete the graphic of the airplan with the given id
