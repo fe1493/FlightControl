@@ -23,11 +23,21 @@
 	<link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/themes/light/main.css">
 	<script src="https://js.arcgis.com/4.15/"></script>
 	<script src="js/map.js" asp-append-version="true"></script>
-	<a id="trashImg" href="https://icons8.com/icon/Z9Cc22qAh-8R/trash"></a>
 	<script src="js/main.js"></script>
 </head>
 
 <body>
+	<div>
+		<input type="file" name="extra-file" id="extra-file">
+		<button type="button" id="extra-submit">tani</button>
+	</div>
+	<script>
+		$('#extra-submit').on('click', function(e) {
+			let file = $('#extra-file');
+			console.log(file[0].files);
+		})
+	</script>
+
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-8">
@@ -107,7 +117,10 @@
 	</div>
 
 	<!-- Others js files -->
+	<script src="js/test.js"></script>
 	<script>
+		// Post 4 json
+		testFlights();
 		flightsTable();
 	</script>
 
