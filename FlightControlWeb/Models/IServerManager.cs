@@ -7,7 +7,7 @@ namespace FlightControlWeb.Models
 {
    public interface IServerManager
     {
-        Servers GetServer(string id);
-        void AddServer(Servers server);
+        Server GetServer(string id);
+        void AddServer(Server server);
     }
 }
