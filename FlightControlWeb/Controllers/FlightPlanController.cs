@@ -88,7 +88,7 @@ namespace FlightControlWeb.Controllers
 
         // POST: api/FlightPlan
         [HttpPost]
-        public void Post([FromBody] FlightPlan flightPlan)
+        public ActionResult<string> Post([FromBody] FlightPlan flightPlan)
         {
             string flightPlanId = flightManager.CreateIdentifier(flightPlan);
             flightPlan.FlightPlanId = flightPlanId;
@@ -104,25 +104,11 @@ namespace FlightControlWeb.Controllers
             else
             {
                 fpKeys.Add(flightPlan.FlightPlanId);
-                memoryCache.Remove("flightListKeys");
-                memoryCache.Set("flightListKeys", fpKeys);
-
             }
+            return Ok(flightPlanId);
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(string id)
-        {
-            //check if other servers have the id and erase it?
-            List<string> fpKeys = memoryCache.Get("flightListKeys") as List<string>;
 
-
-            fpKeys.Remove(id);
-
-            memoryCache.Remove(id);
-
-        }
 
     }
 }

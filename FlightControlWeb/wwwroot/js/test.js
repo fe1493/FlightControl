@@ -2,23 +2,23 @@ let f1 = {
     "passengers": 236,
     "company_name": "Realmo Air",
     "initial_location": {
-      "latitude": 4,
-      "longitude": 120,
-      "date_time": "2019-04-27T19:29:26Z"
+        "latitude": 4,
+        "longitude": 120,
+        "date_time": "2019-04-27T19:29:26Z"
     },
     "segments": [
-      {
-        "longitude": 32,
-        "latitude": 62,
-        "timespan_seconds": 116
-      },
-      {
-        "longitude": 13,
-        "latitude": 7,
-        "timespan_seconds": 956
-      }
+        {
+            "longitude": 32,
+            "latitude": 62,
+            "timespan_seconds": 116
+        },
+        {
+            "longitude": 13,
+            "latitude": 7,
+            "timespan_seconds": 956
+        }
     ]
-  }
+}
 
 let f2 = {
     "passengers": 311,
@@ -26,7 +26,7 @@ let f2 = {
     "initial_location": {
       "latitude": 76,
       "longitude": 89,
-      "date_time": "2018-12-15T15:26:51Z"
+      "date_time": "2020-05-24T18:07:15Z"
     },
     "segments": [
       {
@@ -98,23 +98,61 @@ let f2 = {
 
 function testFlights(){
     let currentTime = getCurrentTime();
-    f1.date_time = currentTime;
-    f2.date_time = currentTime;
-    f3.date_time = currentTime;
-    f4.date_time = currentTime;
+    f1.initial_location.date_time = currentTime;
+    f2.initial_location.date_time = currentTime;
+    f3.initial_location.date_time = currentTime;
+    f4.initial_location.date_time = currentTime;
     postflightplan(f1);
     postflightplan(f2);
     postflightplan(f3);
     postflightplan(f4);
 }
 
-function postflightplan(flightPlan){
-    let url1 = "https://localhost:44389/api/FlightPlan";
-    $.ajax({
-      url: url1,
-      type: 'POST',
-      contentType:'application/json',
-      data: JSON.stringify(flightPlan),
-      dataType:'json'
-    });
+function postflightplan(flightPlan) {
+    //(async () => {
+    //    const rawResponse = await fetch("https://localhost:44389/api/flightplan", {
+    //        method: 'POST',
+    //        headers: {
+    //            'Accept': 'application/json',
+    //            'Content-Type': 'application/json'
+    //        },
+    //        body: JSON.stringify(flightPlan)
+    //    });
+    //    const content = await rawResponse.json();
+
+    //    console.log(content);
+    //})();
+
+
+    let postOptions = preparePost(flightPlan);
+    fetch("https://localhost:44389/api/flightplan", postOptions)
+    .then(response => respone.json())
+        .catch(error => console.log(error))
 }
+
+let ContentType = 'application/json;charset=utf-8';
+function preparePost(flightplan) {
+    let flighplanAsSrt = JSON.stringify(flightplan);
+    return {
+        "method": "POST",
+        "headers": {
+            'Content-Type': ContentType
+        },
+        "body": flighplanAsSrt
+    }
+}
+
+
+
+
+
+//function postflightplan(flightPlan) {
+//    let data = flightPlan;
+//    let url = 'https://localhost:44389/api/flightplan';
+//    $.ajax({
+//        url: url,
+//        type: 'POST',
+//        dataType: 'json',
+//        data: JSON.stringify(data)
+//    });
+//}

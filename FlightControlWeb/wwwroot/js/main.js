@@ -6,7 +6,7 @@ function addflightplan() {
     let postOption = preparePost(flightplan);
     fetch("/api/flightplan", postOption).
         then(response => response.json).
-        catch(error => console.log(error))
+        catch(error => console.log(error));
 
 }
 

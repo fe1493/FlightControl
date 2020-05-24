@@ -121,5 +121,27 @@ namespace FlightControlWeb.Controllers
 
 
         }
+        // DELETE: api/Flights/5
+        [HttpDelete("{id}")]
+        public ActionResult<FlightPlan> Delete(string id)
+        {
+            //check if other servers have the id and erase it
+            List<string> fpKeys = memoryCache.Get("flightListKeys") as List<string>;
+
+            FlightPlan fp = new FlightPlan();
+            if (!memoryCache.TryGetValue(id, out fp))
+            {
+                return BadRequest();
+            }
+            else
+            {
+                fpKeys.Remove(id);
+                memoryCache.Remove(id);
+                return Ok();
+            }
+
+
+
+        }
     }
 }
