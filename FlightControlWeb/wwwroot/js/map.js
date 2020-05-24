@@ -1,9 +1,9 @@
 ﻿let myPic;
 let myClickedPic;
-var airplansDic = {};
-var currentPath;
-var isPathVisible = false;
-var airplanClicked;
+let airplansDic = {};
+let currentPath;
+let isPathVisible = false;
+let airplanClicked;
 
 require([
     "esri/Map",
@@ -44,6 +44,7 @@ require([
         view.hitTest(screenPoint)
             .then(function (response) {
                 changePlanClicked();
+                clearDetails();
                 airplanClicked = response.results[0]
                 airplanClicked.graphic.symbol = myClickedPic;
                 showFlightDetails(airplanClicked.graphic.attributes.name);

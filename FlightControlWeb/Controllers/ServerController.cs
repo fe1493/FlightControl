@@ -15,12 +15,10 @@ namespace FlightControlWeb.Controllers
     public class ServersController : ControllerBase
     {
 
-        private IServerManager serverManager;
         private IMemoryCache memoryCache;
 
-        public ServersController(IServerManager manager, IMemoryCache cache)
+        public ServersController(IMemoryCache cache)
         {
-            serverManager = manager;
             memoryCache = cache;
 
         }

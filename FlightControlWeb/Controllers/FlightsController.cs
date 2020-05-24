@@ -28,7 +28,7 @@ namespace FlightControlWeb.Controllers
         public async Task<List<Flight>> Func(Server servers, string relativeTime)
         {
             HttpRequestClass httpRequestClass = new HttpRequestClass();
-            string param = "/api/flights"+relativeTime;
+            string param = "/api/flights?relative_to="+relativeTime;
             var response = await httpRequestClass.makeRequest(servers.ServerURL + param);
             List<Flight> flightsList = new List<Flight>();
             flightsList = JsonConvert.DeserializeObject<List<Flight>>(response);
@@ -39,7 +39,7 @@ namespace FlightControlWeb.Controllers
 
         [HttpGet]
         public async Task<IEnumerable<Flight>> GetFlights([FromQuery(Name = "relative_to")]string relativeTime)
-        {
+            {
             DateTime relativeTo;
             if (!DateTime.TryParse(relativeTime, out relativeTo))
             {
@@ -96,6 +96,7 @@ namespace FlightControlWeb.Controllers
                 foreach (var flight in flightsList)
                 {
                     flightsKeysList.Add(flight.FlightId);
+                    flightManager.SetExternalFlights(flightsList);
                 }
 
                 //create map/dictonary

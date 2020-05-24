@@ -12,7 +12,7 @@ function addflightplan() {
 let currentFlights = "";
 function getFlights() {
     let currentTime = getCurrentTime();
-    let url = baseURL+ "/api/Flights?relative_to=" + currentTime;
+    let url = baseURL+ "/api/Flights?relative_to=" + currentTime+"&sync_all";
     $.getJSON(url, function (data) {
         data.forEach(function (flight) {
             $(flight).each(function (index, value) {
@@ -65,6 +65,7 @@ function flightsTable() {
     setInterval(function() {
         getFlights();
     }, 4000);
+    
 }
 
 // Get Current Time
