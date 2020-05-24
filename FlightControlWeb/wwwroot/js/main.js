@@ -83,8 +83,8 @@ function deleteFlight(row) {
 }
 
 // delete flightplan from the server
-function deleteFlightFromServer (id){
-    let url = 'http://ronyut2.atwebpages.com/ap2/api/Flights/' + id;
+function deleteFlightFromServer(id) {
+    let url = baseURL + '/api/Flights/' + id;
     $.ajax({
         url: url,
         type: 'DELETE',
