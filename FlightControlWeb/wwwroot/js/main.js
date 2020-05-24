@@ -6,10 +6,14 @@ function addflightplan() {
     let postOption = preparePost(flightplan);
     fetch("/api/flightplan", postOption).
         then(response => response.json).
-        catch(error => console.log(error))
+        catch(error => console.log(error));
 
 }
+
+// currentFlight is string that hold all the info about the flight 
+// that we get from the server (every request).
 let currentFlights = "";
+
 function getFlights() {
     let currentTime = getCurrentTime();
     let url = baseURL+ "/api/Flights?relative_to=" + currentTime;
@@ -42,11 +46,29 @@ function addFlightsTable(flight) {
     drawPlan(flight.flight_id, flight.latitude, flight.longitude);
 }
 
+// delete all the info of the flightplan
+// include the flightplan in the server
 function deleteFlight(row) {
-    // send to server to delete this flight
-    // ***********************************************************
-    var p = row.parentNode.parentNode;
+    // get the element of the row
+    let p = row.parentNode.parentNode;
+    // get id (first column)
+    let id = p.cells[0].innerHTML;
+    // delete the flightplan from the server
+    deleteFlightFromServer(id);
+    // delete the row in the flights table
     p.parentNode.removeChild(p);
+}
+
+// delete flightplan from the server
+function deleteFlightFromServer(id) {
+    let url = baseURL + "/api/Flights/" + id;
+    $.ajax({
+        url: url,
+        type: 'DELETE',
+        success: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 function preparePost(flightplan) {
