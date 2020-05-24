@@ -109,7 +109,7 @@ function testFlights(){
 }
 
 function postflightplan(flightPlan){
-    let url1 = "http://ronyut2.atwebpages.com/ap2/api/FlightPlan";
+    let url1 = "https://localhost:44389/api/FlightPlan";
     $.ajax({
       url: url1,
       type: 'POST',

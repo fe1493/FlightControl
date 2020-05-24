@@ -1,12 +1,12 @@
 ﻿let mainArrayFlightPlans = [];
+let baseURL = "https://localhost:44389";
+let flightplan = { "companyname": "EL-AL" }
 
-let flightplan = {"companyname":"EL-AL" }
 function addflightplan() {
     let postOption = preparePost(flightplan);
-    fetch("http://ronyut2.atwebpages.com/ap2/api/FlightPlan", postOption).
+    fetch(baseURL + "/api/FlightPlan", postOption).
         then(response => response.json).
         catch(error => console.log(error))
-
 }
 
 // currentFlight is string that hold all the info about the flight 
@@ -16,7 +16,7 @@ let currentFlights = "";
 // get the flights from the server.
 function getFlights() {
     let currentTime = getCurrentTime();
-    let url = "http://ronyut2.atwebpages.com/ap2/api/Flights?relative_to=" + currentTime;
+    let url = baseURL + "/api/Flights?relative_to=" + currentTime;
     $.getJSON(url, function (data) {
         data.forEach(function (flight) {
             $(flight).each(function (index, value) {
