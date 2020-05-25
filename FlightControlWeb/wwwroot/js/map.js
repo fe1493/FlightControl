@@ -1,34 +1,9 @@
-﻿
-function addServer() {
-    const serverURL = document.getElementById("serverId");
-    let myServer = {
-        ServerId: 21,
-        ServerURL: serverURL.value.trim()
-    };
-    fetch('api/server', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(myServer)
-    })
-        .then(response => response.json())
-        .then(() => {
-            serverURL.value = '';
-        })
-        .catch(error => console.error('Unable to add item.', error));
-
-
-
-}
-
-
-
-
-let myPic;
-let myGraphLayer
+﻿let myPic;
+let myClickedPic;
 var airplansDic = {};
+var currentPath;
+var isPathVisible = false;
+var airplanClicked;
 
 require([
     "esri/Map",
@@ -42,73 +17,157 @@ require([
         basemap: "streets"
     });
 
+
+
     var view = new MapView({
         container: "map",
         map: map,
-        center: [32.00, 34.02700],
-        zoom: 4
+        center: [33.80, 32.2700],
+        zoom: 3
     });
 
     var graphicsLayer = new GraphicsLayer();
     map.add(graphicsLayer);
-    myGraphicsLayer = graphicsLayer;
+
+    var alterAirplanPicture = new PictureMarkerSymbol({
+        url: "https://cdn0.iconfinder.com/data/icons/vehicles-23/64/vehicles-23-512.png",
+        width: "100px",
+        height: "100px"
+            
+
+    });
+    myClickedPic = alterAirplanPicture;
+
+    //event of click on airplan        
+    view.on("click", function (evt) {
+        var screenPoint = evt.screenPoint;
+        view.hitTest(screenPoint)
+            .then(function (response) {
+                changePlanClicked();
+                airplanClicked = response.results[0]
+                airplanClicked.graphic.symbol = myClickedPic;
+                showFlightDetails(airplanClicked.graphic.attributes.name);
+            });
+    });
+
+
+
+
+
 
     var airplanPicture = new PictureMarkerSymbol({
         url: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png",
         width: "50px",
         height: "50px"
+
     });
     myPic = airplanPicture;
 
-    function addPlan(a, b, id) {
+    function drawSegments(segments) {
+        let i = 0;
+
+        var polylineGraphic = new Graphic();
+        currentPath = polylineGraphic;
+        var simpleLineSymbol = {
+            type: "simple-line",
+            color: [0, 0, 0],
+            width: 3
+        };
+        var myPolyline = {
+            type: "polyline",
+            paths: [
+            ]
+        };
+
+        for (i = 0; i < segments.length; i++) {
+            myPolyline.paths.push([segments[i]["longitude"], segments[i]["latitude"]]);
+        }
+        polylineGraphic.geometry = myPolyline;
+        polylineGraphic.symbol = simpleLineSymbol;
+
+        graphicsLayer.add(polylineGraphic);
+        currentPath = polylineGraphic;
+
+
+    }
+    function removeSegments() {
+        graphicsLayer.remove(currentPath);
+    }
+
+
+
+    function addPlan(lat, lon, id) {
         var airplanGraphic = new Graphic();
+
         airplanGraphic.attributes = {
             name: id,
         };
         airplansDic[airplanGraphic.attributes.name] = airplanGraphic;
-        myGraphicsLayer.add(airplanGraphic);
+        graphicsLayer.add(airplanGraphic);
 
         var point = {
             type: "point",
         };
-        point.latitude = a;
-        point.longitude = b;
+        point.latitude = lat;
+        point.longitude = lon;
 
         airplanGraphic.geometry = point;
         airplanGraphic.symbol = myPic;
+
     }
 
-
-    function updatePlan(a, b, name) {
-        var apg = airplansDic[name];
+    function updatePlan(lat, lon, id) {
+        var apg = airplansDic[id];
         var point = {
             type: "point",
         };
-        point.latitude = a;
-        point.longitude = b;
+        point.latitude = lat;
+        point.longitude = lon;
         apg.geometry = point;
     }
 
     window.addPlan = addPlan;
     window.updatePlan = updatePlan;
-
-
+    window.drawSegments = drawSegments;
+    window.removeSegments = removeSegments;
 });
 
-function test() {
+function drawNewPlan(latitude, longitude, id) {
+    addPlan(latitude, longitude, id);
+}
+function drawPlanPath(segments) {
+    if (isPathVisible == true) {
+        hidePath();
+    }
+    drawSegments(segments);
+    isPathVisible = true;
+}
 
-    var lat = document.getElementById("latitude");
-    var lon = document.getElementById("longitude")
-    const l = Number(lat.value);
-    const k = Number(lon.value);
-    addPlan(l, k, "elal");
+function hidePath() {
+    removeSegments();
+}
+function changePlanClicked() {
+    if (airplanClicked != null) {
+        airplanClicked.graphic.symbol = myPic;
+    }
+}
+
+
+function drawPlan(id, latitude, longitude) {
+    console.log(id);
+    if (id in airplansDic) {
+        updatePlanOnMap(latitude, longitude, id);
+    } else {
+        drawNewPlan(latitude, longitude, id);
+    }
+}
+
+function updatePlanOnMap(latitude, longitude, id) {
+    updatePlan(latitude, longitude, id);
 
 }
-function testUpdate() {
+//this method calls the getFlightDetails method in details.js
+function showFlightDetails(id) {
+    getFlightPlan(id);
 
-    var lat = document.getElementById("latitude");
-    var lon = document.getElementById("longitude")
-    const l = Number(lat.value);
-    const k = Number(lon.value);
-    updatePlan(l, k, "elal");
 }
