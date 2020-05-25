@@ -126,10 +126,16 @@ require([
         apg.geometry = point;
     }
 
+        function removePlanOnMap(id) {
+            var apg = airplansDic[id];
+            graphicsLayer.remove(apg);
+        }
+
     window.addPlan = addPlan;
     window.updatePlan = updatePlan;
     window.drawSegments = drawSegments;
-    window.removeSegments = removeSegments;
+        window.removeSegments = removeSegments;
+        window.removePlanOnMap = removePlanOnMap;
 });
 
 function drawNewPlan(latitude, longitude, id) {
@@ -146,28 +152,37 @@ function drawPlanPath(segments) {
 function hidePath() {
     removeSegments();
 }
-function changePlanClicked() {
-    if (airplanClicked != null) {
-        airplanClicked.graphic.symbol = myPic;
-    }
-}
-
-
-function drawPlan(id, latitude, longitude) {
-    console.log(id);
-    if (id in airplansDic) {
-        updatePlanOnMap(latitude, longitude, id);
-    } else {
-        drawNewPlan(latitude, longitude, id);
-    }
-}
 
 function updatePlanOnMap(latitude, longitude, id) {
     updatePlan(latitude, longitude, id);
 
 }
-//this method calls the getFlightDetails method in details.js
+
+
+
+//this method calls the getFlightDetails method in details.js and update the "flight details" section
 function showFlightDetails(id) {
+    hidePath();
     getFlightPlan(id);
 
+}
+//cancel the path drawing on the map the cancel the clicked plan
+function changePlanClicked() {
+    if (airplanClicked != null) {
+        airplanClicked.graphic.symbol = myPic;
+    }
+    hidePath();
+}
+//delete the graphic of the airplan with the given id
+function removePlan(id) {
+    removePlanOnMap(id);
+}
+
+//draw new plan or update the placement of the old one's
+function drawPlan(id, latitude, longitude) {
+    if (id in airplansDic) {
+        updatePlanOnMap(latitude, longitude, id);
+    } else {
+        drawNewPlan(latitude, longitude, id);
+    }
 }
