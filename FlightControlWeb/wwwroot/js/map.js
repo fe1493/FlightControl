@@ -171,53 +171,7 @@ function hidePath() {
 }
 
 function updatePlanOnMap(latitude, longitude, id) {
-    let isArrived = checkIfArrived(latitude, longitude, id);
-    if (isArrived) {
-        let coloredRow = document.getElementById(id);
-        if (coloredRow.style.backgroundColor == "red") {
-            // Delete path
-            removeSegments();
-            resetDetails();
-        }
-        // delete flightId from the dictionary in map.js
-        removePlan(id);
-        if (id === colorId) {
-            colorId = -1;
-        }
-    }
-    else {
-        updatePlan(latitude, longitude, id);
-    }
-}
-
-function checkIfArrived(latitude, longitude, id) {
-    let finalLatitude = -1;
-    let finalLongitude = -1;
-    var url = baseURL + "/api/flightplan/";
-    var urlPath = url.concat(id.toString());
-    $.getJSON(urlPath, function (data) {
-        let flightTime = 0;
-        let flightSegments = data["segments"];
-        let initialLocation = data["initial_location"];
-        flightSegments.unshift(initialLocation);
-        let i = 1;
-        for (; i < flightSegments.length; i++) {
-            flightTime += data["segments"][i]["timespan_seconds"];
-        }
-        finalLatitude = flightSegments[i - 1].latitude;
-        finalLongitude = flightSegments[i - 1].longitude;
-        //console.log(currentLatitude);
-        //console.log(currentLongitude);
-    });
-    let latDelta = Math.abs(finalLatitude - parseInt(latitude, 10));
-    let lonDelta = Math.abs(finalLongitude - parseInt(longitude, 10));
-    console.log(latDelta);
-    console.log(lonDelta);
-
-    if (latDelta <= 15 && lonDelta <= 15) {
-        console.log("finish");
-        return true;
-    }
+    updatePlan(latitude, longitude, id);
 }
 
 //this method calls the getFlightDetails method in details.js and update the "flight details" section

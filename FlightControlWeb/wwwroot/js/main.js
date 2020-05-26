@@ -6,10 +6,9 @@ let baseURL = "https://localhost:44389";
 
 // get the flight over and over, update every 3 sec
 function flightsTable() {
-    //getFlights();
     getFlightsSyncAll();
     setInterval(function () {
-        getFlights();
+        getFlightsSyncAll();
     }, 3000);
 }
 
@@ -28,8 +27,10 @@ async function getFlights() {
         $('#tbid tbody').empty();
         $('#tbid tbody').append(currentFlights);
         currentFlights = "";
-        // check if there is a flight in the map than need to delete
-        updateMap();
+        if (Object.keys(airplansDic).length > 0) {
+            // check if there is a flight in the map than need to delete
+            updateMap();
+        }
         // clear array for next getFlights
         idArray = [];
     }
@@ -38,32 +39,35 @@ async function getFlights() {
     }
 }
 
+// iterate the info from server, and add Flights
 function forEachFlights(flightPlans) {
     flightPlans.forEach(function (flight) {
         $(flight).each(function (index, value) {
             addFlightsTable(value);
         })
-        // insert id to array
-        idArray.push[flight.flight_id];
+        // insert id to array, to check if we need to delete from map
+        idArray.push(flight.flight_id);
     });
 }
 
+// Check if there is old flight in map that we need to delete.
 function updateMap() {
-    airplansDic.forEach(function (value, index, array) {
-        if (value in idArray) {
+    $(airplansDic).each(function (key, value) {
+        let id = value[Object.keys(value)[0]].attributes.name;
+        if (idArray.includes(id)) {
             // do nothing
         }
         else {
             // value (=id) are not in server, so erase it from the map
-            deleteFromMap(value);
+            deleteFromMap(id);
         }
     });
 }
 
-function deleteFromMap(value) {
+// Delete flight from map.
+function deleteFromMap(id) {
     // Delete path
     removeSegments();
-    let id = value;
     // delete flightId from the dictionary in map.js
     removePlan(id);
     if (id === colorId) {

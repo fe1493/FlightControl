@@ -13,8 +13,10 @@ async function getFlightsSyncAll() {
         $('#tbid tbody').empty();
         $('#tbid tbody').append(currentFlights);
         currentFlights = "";
-        // check if there is a flight in the map than need to delete
-        updateMap();
+        if (Object.keys(airplansDic).length > 0) {
+            // check if there is a flight in the map than need to delete
+            updateMap();
+        }
         // clear array for next getFlights
         idArray = [];
     }
