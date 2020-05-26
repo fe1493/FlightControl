@@ -145,6 +145,7 @@ require([
         function removePlanOnMap(id) {
             var apg = airplansDic[id];
             graphicsLayer.remove(apg);
+            delete airplansDic[id];
         }
 
     window.addPlan = addPlan;

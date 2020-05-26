@@ -14,7 +14,7 @@ function onChange(event) {
     reader.onload = (event) => {
         // file content
         let obj = JSON.parse(reader.result);
-        postflightplan(obj);
+        testPostflightplan(obj);
     }
     $("#fileInput").val('');
     reader.onerror = error => reject(error);

@@ -66,22 +66,22 @@ function addFlightsTable(flight) {
 // Row click event
 // 1. color the row. 2. show details. 3. mark plan as chosen.
 function rowClicked(row) {
-    // another flight has chosen
-    if (colorId != -1) {
-        // found the preaviuos row and disable the color
-        let coloredRow = document.getElementById(colorId);
-        changePicNotClicked(colorId);
-        coloredRow.style.backgroundColor = "white";
-    }
-    // 1. color the row.
-    row.style.backgroundColor = "red";
     let id = row.cells[0].innerHTML;
-    // update the variable, for the update
-    colorId = id;
-    // 2. show details.
     if (id in airplansDic) {
         showFlightDetails(id);
         changePicClicked(id);
+        // another flight has chosen
+        if (colorId != -1) {
+            // found the preaviuos row and disable the color
+            let coloredRow = document.getElementById(colorId);
+            changePicNotClicked(colorId);
+            coloredRow.style.backgroundColor = "white";
+        }
+        // 1. color the row.
+        row.style.backgroundColor = "red";
+        // update the variable, for the update
+        colorId = id;
+    // 2. show details.
     }
 }
 
@@ -101,12 +101,15 @@ function deleteFlight(row) {
     // delete flightId from the dictionary in map.js
     removePlan(id);
     resetDetails();
+    if (id === colorId) {
+        colorId = -1;
+    }
 }
 
 // Delete flightplan from the server
 function deleteFlightFromServer(id) {
     // create the flight that need to delete
-    let url = baseURL + "/api/flights/" + id;
+    let url = baseURL + "/api/Flights/" + id;
     $.ajax({
         url: url,
         type: 'DELETE',
@@ -126,7 +129,9 @@ function getCurrentTime(){
     return currentTime;
 }
 
-
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 //   *************************************************************************************
 //   ***********************************   OLD CODE - NOT IN USE  ************************
