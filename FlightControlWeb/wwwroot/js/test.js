@@ -109,43 +109,39 @@ function testFlights(){
 }
 
 function testPostflightplan(flightPlan) {
-    //(async () => {
-    //    const rawResponse = await fetch("https://localhost:44389/api/flightplan", {
-    //        method: 'POST',
-    //        headers: {
-    //            'Accept': 'application/json',
-    //            'Content-Type': 'application/json'
-    //        },
-    //        body: JSON.stringify(flightPlan)
-    //    });
-    //    const content = await rawResponse.json();
+    (async () => {
+        const rawResponse = await fetch("https://localhost:44389/api/flightplan", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(flightPlan)
+        });
+        const content = await rawResponse.json();
 
-    //    console.log(content);
-    //})();
-
-
-    let postOptions = preparePost(flightPlan);
-    fetch("https://localhost:44389/api/flightplan", postOptions)
-    .then(response => respone.json())
-        .catch(error => console.log(error))
-}
-
-let ContentType = 'application/json;charset=utf-8';
-function preparePost(flightplan) {
-    let flighplanAsSrt = JSON.stringify(flightplan);
-    return {
-        "method": "POST",
-        "headers": {
-            'Content-Type': ContentType
-        },
-        "body": flighplanAsSrt
-    }
+        console.log(content);
+    })();
 }
 
 
+    //let postOptions = preparePost(flightPlan);
+    //fetch("https://localhost:44389/api/flightplan", postOptions)
+    //.then(response => respone.json())
+    //    .catch(error => console.log(error))
 
 
-
+//let ContentType = 'application/json;charset=utf-8';
+//function preparePost(flightplan) {
+//    let flighplanAsSrt = JSON.stringify(flightplan);
+//    return {
+//        "method": "POST",
+//        "headers": {
+//            'Content-Type': ContentType
+//        },
+//        "body": flighplanAsSrt
+//    }
+//}
 //function postflightplan(flightPlan) {
 //    let data = flightPlan;
 //    let url = 'https://localhost:44389/api/flightplan';
