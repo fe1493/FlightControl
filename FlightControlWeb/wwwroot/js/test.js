@@ -102,50 +102,43 @@ function testFlights(){
     f2.initial_location.date_time = currentTime;
     f3.initial_location.date_time = currentTime;
     f4.initial_location.date_time = currentTime;
-    postflightplan(f1);
-    postflightplan(f2);
-    postflightplan(f3);
-    postflightplan(f4);
+    testPostflightplan(f1);
+    testPostflightplan(f2);
+    testPostflightplan(f3);
+    testPostflightplan(f4);
 }
 
-function postflightplan(flightPlan) {
-    //(async () => {
-    //    const rawResponse = await fetch("https://localhost:44389/api/flightplan", {
-    //        method: 'POST',
-    //        headers: {
-    //            'Accept': 'application/json',
-    //            'Content-Type': 'application/json'
-    //        },
-    //        body: JSON.stringify(flightPlan)
-    //    });
-    //    const content = await rawResponse.json();
-
-    //    console.log(content);
-    //})();
-
-
-    let postOptions = preparePost(flightPlan);
-    fetch("https://localhost:44389/api/flightplan", postOptions)
-    .then(response => respone.json())
-        .catch(error => console.log(error))
-}
-
-let ContentType = 'application/json;charset=utf-8';
-function preparePost(flightplan) {
-    let flighplanAsSrt = JSON.stringify(flightplan);
-    return {
-        "method": "POST",
-        "headers": {
-            'Content-Type': ContentType
-        },
-        "body": flighplanAsSrt
-    }
+function testPostflightplan(flightPlan) {
+    (async () => {
+        const rawResponse = await fetch("https://localhost:44389/api/flightplan", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(flightPlan)
+        });
+    })();
 }
 
 
+    //let postOptions = preparePost(flightPlan);
+    //fetch("https://localhost:44389/api/flightplan", postOptions)
+    //.then(response => respone.json())
+    //    .catch(error => console.log(error))
 
 
-
+//let ContentType = 'application/json;charset=utf-8';
+//function preparePost(flightplan) {
+//    let flighplanAsSrt = JSON.stringify(flightplan);
+//    return {
+//        "method": "POST",
+//        "headers": {
+//            'Content-Type': ContentType
+//        },
+//        "body": flighplanAsSrt
+//    }
+//}
 //function postflightplan(flightPlan) {
 //    let data = flightPlan;
 //    let url = 'https://localhost:44389/api/flightplan';
