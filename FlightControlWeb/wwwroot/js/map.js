@@ -57,6 +57,11 @@ require([
                 }
                 // click on plan
                 else {
+                    if (colorId != -1) {
+                        // found the color row and disable the color
+                        let coloredRow = document.getElementById(colorId);
+                        coloredRow.style.backgroundColor = "white";
+                    }
                     airplanClicked.graphic.symbol = myClickedPic;
                     let id = airplanClicked.graphic.attributes.name;
                     colorId = id;
@@ -140,6 +145,7 @@ require([
         function removePlanOnMap(id) {
             var apg = airplansDic[id];
             graphicsLayer.remove(apg);
+            delete airplansDic[id];
         }
 
     window.addPlan = addPlan;
