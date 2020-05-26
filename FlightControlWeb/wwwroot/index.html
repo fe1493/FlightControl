@@ -27,9 +27,19 @@
 
 	<script src="js/main.js"></script>
 	<script src="js/details.js"></script>
+	<script src="js/test.js"></script>
+	<script>
+		testFlights();
+	</script>
 </head>
 
 <body>
+	
+	<form id="myForm">
+		<label for="fileInput">Add a new Flight plan</label>
+		<input type="file" id="fileInput" onchange="onChange(event)" />
+		<script src="js/dragDrop.js"></script>
+	</form>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-8">
@@ -109,9 +119,7 @@
 	</div>
 
 	<!-- Others js files -->
-	<script src="js/test.js"></script>
 	<script>
-		testFlights();
 		flightsTable();
 	</script>
 

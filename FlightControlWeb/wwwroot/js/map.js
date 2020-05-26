@@ -31,8 +31,8 @@ require([
 
     var alterAirplanPicture = new PictureMarkerSymbol({
         url: "https://cdn0.iconfinder.com/data/icons/vehicles-23/64/vehicles-23-512.png",
-        width: "100px",
-        height: "100px"
+        width: "80px",
+        height: "80px"
             
 
     });
@@ -44,16 +44,28 @@ require([
         view.hitTest(screenPoint)
             .then(function (response) {
                 changePlanClicked();
-                airplanClicked = response.results[0]
-                airplanClicked.graphic.symbol = myClickedPic;
-                showFlightDetails(airplanClicked.graphic.attributes.name);
+                airplanClicked = response.results[0];
+                // click on map
+                if (airplanClicked == null) {
+                    // console.log("mapclick");
+                    if (colorId != -1) {
+                        // found the color row and disable the color
+                        let coloredRow = document.getElementById(colorId);
+                        coloredRow.style.backgroundColor = "white";
+                        colorId = -1;
+                    }
+                }
+                // click on plan
+                else {
+                    airplanClicked.graphic.symbol = myClickedPic;
+                    let id = airplanClicked.graphic.attributes.name;
+                    colorId = id;
+                    let coloredRow = document.getElementById(colorId);
+                    coloredRow.style.backgroundColor = "red";
+                    showFlightDetails(id);
+                }
             });
     });
-
-
-
-
-
 
     var airplanPicture = new PictureMarkerSymbol({
         url: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png",
@@ -70,8 +82,9 @@ require([
         currentPath = polylineGraphic;
         var simpleLineSymbol = {
             type: "simple-line",
-            color: [0, 0, 0],
-            width: 3
+            color: "red",
+            width: "2px",
+            style: "short-dot"
         };
         var myPolyline = {
             type: "polyline",
@@ -87,7 +100,6 @@ require([
 
         graphicsLayer.add(polylineGraphic);
         currentPath = polylineGraphic;
-
 
     }
     function removeSegments() {
@@ -113,7 +125,6 @@ require([
 
         airplanGraphic.geometry = point;
         airplanGraphic.symbol = myPic;
-
     }
 
     function updatePlan(lat, lon, id) {
@@ -170,6 +181,13 @@ function changePlanClicked() {
     if (airplanClicked != null) {
         airplanClicked.graphic.symbol = myPic;
     }
+    for (var key in airplansDic) {
+        // check if the property/key is defined in the object itself, not in parent
+        //if (airplansDic.hasOwnProperty(key)) {
+        //    console.log(key, dictionary[key]);
+        //}
+        airplansDic[key].symbol = myPic;
+    }
     resetDetails();
     hidePath();
 }
@@ -185,4 +203,14 @@ function drawPlan(id, latitude, longitude) {
     } else {
         drawNewPlan(latitude, longitude, id);
     }
+}
+
+// change the symbol (picture) of the plan - CLICKED
+function changePicClicked(id) {
+    airplansDic[id].symbol = myClickedPic;
+}
+
+// change the symbol (picture) of the plan - NOT CLICKED
+function changePicNotClicked(id) {
+    airplansDic[id].symbol = myPic;
 }
