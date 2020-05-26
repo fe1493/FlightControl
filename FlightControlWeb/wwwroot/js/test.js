@@ -108,7 +108,7 @@ function testFlights(){
     postflightplan(f4);
 }
 
-function postflightplan(flightPlan) {
+//function postflightplan(flightPlan) {
     //(async () => {
     //    const rawResponse = await fetch("https://localhost:44389/api/flightplan", {
     //        method: 'POST',
@@ -124,11 +124,11 @@ function postflightplan(flightPlan) {
     //})();
 
 
-    let postOptions = preparePost(flightPlan);
-    fetch("https://localhost:44389/api/flightplan", postOptions)
-    .then(response => respone.json())
-        .catch(error => console.log(error))
-}
+    //let postOptions = preparePost(flightPlan);
+    //fetch("https://localhost:44389/api/flightplan", postOptions)
+    //.then(response => respone.json())
+    //    .catch(error => console.log(error))
+//}
 
 let ContentType = 'application/json;charset=utf-8';
 function preparePost(flightplan) {
