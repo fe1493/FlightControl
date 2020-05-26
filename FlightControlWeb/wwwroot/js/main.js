@@ -64,8 +64,7 @@ function preparePost(flightplan) {
 function flightsTable() {
     setInterval(function() {
         getFlights();
-    }, 4000);
-    
+    }, 20000);
 }
 
 // Get Current Time

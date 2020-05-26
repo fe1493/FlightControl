@@ -29,8 +29,16 @@ namespace FlightControlWeb.Controllers
         {
             HttpRequestClass httpRequestClass = new HttpRequestClass();
             string param = "/api/flights?relative_to="+relativeTime;
-            var response = await httpRequestClass.makeRequest(servers.ServerURL + param);
             List<Flight> flightsList = new List<Flight>();
+            var response = (dynamic)null;
+            try
+            {
+                response = await httpRequestClass.makeRequest(servers.ServerURL + param);
+            }
+            catch (Exception)
+            {
+                return flightsList;
+            }
             flightsList = JsonConvert.DeserializeObject<List<Flight>>(response);
             return flightsList;
         }
@@ -124,7 +132,7 @@ namespace FlightControlWeb.Controllers
         }
         // DELETE: api/Flights/5
         [HttpDelete("{id}")]
-        public ActionResult<FlightPlan> Delete(string id)
+        public ActionResult Delete(string id)
         {
             //check if other servers have the id and erase it
             List<string> fpKeys = memoryCache.Get("flightListKeys") as List<string>;

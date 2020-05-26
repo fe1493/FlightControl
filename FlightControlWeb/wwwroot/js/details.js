@@ -5,6 +5,8 @@
     $.getJSON(urlPath, function (data) {
         setDetails(data);
 
+    }).fail(function (data) {
+        errorHandle(data, data.responseText);
     });
 }
 function setDetails(data) {

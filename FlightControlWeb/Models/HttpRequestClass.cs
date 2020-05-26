@@ -14,6 +14,7 @@ namespace FlightControlWeb.Models
         public async Task<dynamic> makeRequest(string url)
         {
             using var client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(10);
             var result = await client.GetStringAsync(url);
             return result;
         }

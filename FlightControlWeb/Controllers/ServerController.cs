@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -73,13 +70,18 @@ namespace FlightControlWeb.Controllers
         {
 
             List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
-            if (serverIdKeysList == null)
+            Server server = new Server();
+            if (!memoryCache.TryGetValue(id, out server))
             {
-                return BadRequest();
+                return BadRequest("Could not find server with this id");
             }
-            serverIdKeysList.Remove(id);
-            memoryCache.Remove(id);
-            return Ok();
+            else
+            {
+                serverIdKeysList.Remove(id);
+                memoryCache.Remove(id);
+                return Ok();
+
+            }
         }
     }
 }

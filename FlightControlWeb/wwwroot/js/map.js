@@ -14,7 +14,7 @@ require([
 ], function (Map, MapView, Graphic, GraphicsLayer, PictureMarkerSymbol) {
 
     var map = new Map({
-        basemap: "streets"
+        basemap: "hybrid"
     });
 
 
@@ -96,7 +96,6 @@ require([
     }
 
 
-
     function addPlan(lat, lon, id) {
         var airplanGraphic = new Graphic();
 
@@ -137,6 +136,7 @@ require([
     window.drawSegments = drawSegments;
         window.removeSegments = removeSegments;
         window.removePlanOnMap = removePlanOnMap;
+        window.changePlanPicture = changePlanPicture;
 });
 
 function drawNewPlan(latitude, longitude, id) {

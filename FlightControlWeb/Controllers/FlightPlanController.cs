@@ -43,7 +43,7 @@ namespace FlightControlWeb.Controllers
 
         // GET: api/FlightPlan/5
         [HttpGet("{id}")]
-        public async Task<FlightPlan> GetFlightPlan(string id)
+        public async Task<ActionResult< FlightPlan>> GetFlightPlan(string id)
         {
             var fp = memoryCache.Get<FlightPlan>(id);
             if (fp == null)
@@ -56,7 +56,7 @@ namespace FlightControlWeb.Controllers
                 if (!memoryCache.TryGetValue("keyOfMyDictonary", out myDictonary))
                 {
                     // no flight plan with that id
-                    return null;
+                    return BadRequest("No flight plan with that id");
                 }
                 else
                 {

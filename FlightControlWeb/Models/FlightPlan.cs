@@ -27,7 +27,7 @@ namespace FlightControlWeb.Models
             public DateTime DateTime { get; set; }
         }
         [JsonProperty("initial_location")]
-        [JsonPropertyName("initial_location")]
+        [JsonPropertyName("initial_location")] 
         public Location InitialLocation { get; set; }
         public List<Segment> Segments { get; set; }
     }
