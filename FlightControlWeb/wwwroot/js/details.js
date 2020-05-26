@@ -1,7 +1,6 @@
 ﻿function getFlightPlan(id) {
     var url = baseURL + "/api/flightplan/";
      var urlPath = url.concat(id.toString());
-     console.log(urlPath);
      $.getJSON(urlPath, function (data) {
         let company = document.getElementById("cmpny");
         company.innerHTML = data["company_name"];

@@ -172,10 +172,7 @@ function hidePath() {
 
 function updatePlanOnMap(latitude, longitude, id) {
     updatePlan(latitude, longitude, id);
-
 }
-
-
 
 //this method calls the getFlightDetails method in details.js and update the "flight details" section
 function showFlightDetails(id) {
