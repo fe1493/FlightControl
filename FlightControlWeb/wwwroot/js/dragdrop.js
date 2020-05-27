@@ -14,7 +14,9 @@ function onChange(event) {
     reader.onload = (event) => {
         // file content
         let obj = JSON.parse(reader.result);
-        testPostflightplan(obj);
+        // ********************  NEED TO DELETE BEFORE SUBMIT !!!!! **************************
+        obj.initial_location.date_time = getCurrentTime();
+        postflightplan(obj);
     }
     $("#fileInput").val('');
     reader.onerror = error => reject(error);

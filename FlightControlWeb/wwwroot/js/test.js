@@ -118,6 +118,9 @@ function testPostflightplan(flightPlan) {
             },
             body: JSON.stringify(flightPlan)
         });
+        const content = await rawResponse.json();
+
+        console.log(content);
     })();
 }
 
