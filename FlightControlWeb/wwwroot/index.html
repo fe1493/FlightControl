@@ -37,9 +37,11 @@
 <body>
 	<div id="topBlock">
 		<form id="myForm">
-			<label for="fileInput">Add a New Flight Plan</label>
+			<!--label for="fileInput">Add a New Flight Plan</!--label-->
 			<input type="file" id="fileInput" onchange="onChange(event)" hidden="hidden" />
-			<button type="button" id="customButton"> CHOOSE A FILE</button>
+			<button type="button" id="customButton" style="font-size:10px; height:auto; padding:10px;
+				"> ADD A NEW FLIGHTPLAN
+			</button>
 			<!--span id="customText">No file chosen yet</!--span-->
 			<script src="js/dragDrop.js"></script>
 		</form>
@@ -52,7 +54,7 @@
 			$("#error").hide();
 		</script>
 	</div>
-	<div class="container-fluid">
+	<div class="container-fluid" style="border:solid;background-color:white; overflow-y:auto">
 		<div class="row">
 			<div class="col-md-8">
 				<div id="map" style="width: 100%;"></div>
@@ -105,7 +107,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-4"  style="background-color:antiquewhite;">
 				<table id="tbid" class="table table-hover">
 					<thead>
 						<tr>
