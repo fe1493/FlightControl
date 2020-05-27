@@ -31,22 +31,33 @@
 	<script src="js/main.js"></script>
 	<script src="js/details.js"></script>
 	<script src="js/getFlightsSyncAll.js"></script>
+	<script src="js/error.js"></script>
 </head>
 
 <body>
-
-	<form id="myForm">
-		<label for="fileInput">Add a New Flight Plan</label>
-		<input type="file" id="fileInput" onchange="onChange(event)" hidden="hidden" />
-		<button type="button" id="customButton"> CHOOSE A FILE</button>
-		<!--span id="customText">No file chosen yet</!--span-->
-		<script src="js/dragDrop.js"></script>
-	</form>
+	<div id="topBlock">
+		<form id="myForm">
+			<label for="fileInput">Add a New Flight Plan</label>
+			<input type="file" id="fileInput" onchange="onChange(event)" hidden="hidden" />
+			<button type="button" id="customButton"> CHOOSE A FILE</button>
+			<!--span id="customText">No file chosen yet</!--span-->
+			<script src="js/dragDrop.js"></script>
+		</form>
+		<!--error block, pop up when an error occurs-->
+		<div id="error" class="alert alert-danger">
+			<p id="errMsg">
+			</p>
+		</div>
+		<script>
+			$("#error").hide();
+		</script>
+	</div>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-8">
 				<div id="map" style="width: 100%;"></div>
 				<div class="row">
+
 
 					<div class="col-md-12" style="border:solid;background-color:antiquewhite">
 						<h3 style="text-align:center">

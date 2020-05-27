@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,27 +9,29 @@ namespace FlightControlWeb.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class serversController : ControllerBase
+    public class ServersController : ControllerBase
     {
 
-        private IServerManager serverManager;
         private IMemoryCache memoryCache;
 
-        public serversController(IServerManager manager, IMemoryCache cache)
+        public ServersController(IMemoryCache cache)
         {
-            serverManager = manager;
             memoryCache = cache;
 
         }
         // GET:    /api/servers
         [HttpGet]
-        public IEnumerable<Server> Get()
+        public ActionResult<IEnumerable<Server>> Get()
         {
 
             List<Server> serverslist = new List<Server>();
 
 
             List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
+            if (serverIdKeysList == null)
+            {
+                return BadRequest("Could not find any servers");
+            }
 
             foreach (var id in serverIdKeysList)
             {
@@ -48,8 +47,13 @@ namespace FlightControlWeb.Controllers
 
         // POST:    /api/servers
         [HttpPost]
-        public void Post(Server server)
+        public ActionResult Post(Server server)
         {
+            Server checkIdServer = memoryCache.Get(server.ServerId) as Server;
+            if (checkIdServer != null)
+            {
+                return BadRequest("Server id is already exist");
+            }
             memoryCache.Set(server.ServerId, server);
 
 
@@ -63,10 +67,8 @@ namespace FlightControlWeb.Controllers
             else
             {
                 serverIdKeysList.Add(server.ServerId);
-                memoryCache.Remove("serverListKeys");
-                memoryCache.Set("serverListKeys", serverIdKeysList);
-
             }
+            return Ok();
 
         }
 
@@ -74,12 +76,22 @@ namespace FlightControlWeb.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public ActionResult Delete(string id)
         {
 
             List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
-            serverIdKeysList.Remove(id);
-            memoryCache.Remove(id);
+            Server server = new Server();
+            if (!memoryCache.TryGetValue(id, out server))
+            {
+                return BadRequest("Could not find server with this id");
+            }
+            else
+            {
+                serverIdKeysList.Remove(id);
+                memoryCache.Remove(id);
+                return Ok();
+
+            }
         }
     }
 }
