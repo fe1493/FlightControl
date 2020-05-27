@@ -43,8 +43,13 @@ namespace FlightControlWeb.Controllers
 
         // POST:    /api/servers
         [HttpPost]
-        public void Post(Server server)
+        public ActionResult Post(Server server)
         {
+            Server checkIdServer = memoryCache.Get(server.ServerId) as Server;
+            if (checkIdServer != null)
+            {
+                return BadRequest("Server id is already exist");
+            }
             memoryCache.Set(server.ServerId, server);
 
 
@@ -59,6 +64,7 @@ namespace FlightControlWeb.Controllers
             {
                 serverIdKeysList.Add(server.ServerId);
             }
+            return Ok();
 
         }
 

@@ -1,11 +1,10 @@
 ﻿function getFlightPlan(id) {
     let url = baseURL + "/api/flightplan/";
-     let urlPath = url.concat(id.toString());
-     console.log(urlPath);
+    let urlPath = url.concat(id.toString());
+    console.log(urlPath);
     $.getJSON(urlPath, function (data) {
         setDetails(data);
-
-    }).fail(function (data) {
+       }).fail(function (data) {
         errorHandle(data, data.responseText);
     });
 }
@@ -36,6 +35,7 @@ function setDetails(data) {
 
 }
 
+
 function setInitialLocation(initialLocation) {
     let initialLocationLat = document.getElementById("iniloclat");
     initialLocationLat.innerHTML = initialLocation["latitude"].toFixed(3);
@@ -49,7 +49,7 @@ function setDepartureTime(date) {
 }
 
 function setArrivalTime(date, flightTime) {
-    let arrivalDate = new Date();
+    var arrivalDate = new Date();
     arrivalDate.setSeconds(date.getSeconds() + flightTime);
     let arrivalTime = document.getElementById("arvl");
     arrivalTime.innerHTML = arrivalDate;
@@ -61,13 +61,30 @@ function setFinalLocation(finalLocation) {
     let finalLocationLon = document.getElementById("finloclon");
     finalLocationLon.innerHTML = finalLocation["longitude"].toFixed(3);
 };
-function clearDetails() {
-    document.getElementById("cmpny").innerHTML = "";
-    document.getElementById("psng").innerHTML = "";
-    document.getElementById("iniloclat").innerHTML = "";
-    document.getElementById("iniloclon").innerHTML = "";
-    document.getElementById("finloclat").innerHTML = "";
-    document.getElementById("finloclon").innerHTML = "";
-    document.getElementById("arvl").innerHTML = "";
-    document.getElementById("dep").innerHTML = "";
+
+function resetDetails() {
+    let company = document.getElementById("cmpny");
+    company.innerHTML = "";
+
+    let passengers = document.getElementById("psng")
+    passengers.innerHTML = "";
+
+    let initialLocationLat = document.getElementById("iniloclat");
+    initialLocationLat.innerHTML = "";
+
+    let initialLocationLon = document.getElementById("iniloclon");
+    initialLocationLon.innerHTML = "";
+
+    let arrivalTime = document.getElementById("arvl");
+    arrivalTime.innerHTML = "";
+
+    let initialLocationTime = document.getElementById("dep");
+    initialLocationTime.innerHTML = "";
+
+    let finalLocationLat = document.getElementById("finloclat");
+    finalLocationLat.innerHTML = "";
+
+    let finalLocationLon = document.getElementById("finloclon");
+    finalLocationLon.innerHTML = "";
+
 }

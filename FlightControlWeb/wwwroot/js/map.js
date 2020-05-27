@@ -1,4 +1,5 @@
-﻿let myPic;
+﻿
+let myPic;
 let myClickedPic;
 let airplansDic = {};
 let currentPath;
@@ -14,7 +15,7 @@ require([
 ], function (Map, MapView, Graphic, GraphicsLayer, PictureMarkerSymbol) {
 
     var map = new Map({
-        basemap: "hybrid"
+        basemap: "streets"
     });
 
 
@@ -31,9 +32,9 @@ require([
 
     var alterAirplanPicture = new PictureMarkerSymbol({
         url: "https://cdn0.iconfinder.com/data/icons/vehicles-23/64/vehicles-23-512.png",
-        width: "100px",
-        height: "100px"
-            
+        width: "80px",
+        height: "80px"
+
 
     });
     myClickedPic = alterAirplanPicture;
@@ -44,17 +45,33 @@ require([
         view.hitTest(screenPoint)
             .then(function (response) {
                 changePlanClicked();
-                clearDetails();
-                airplanClicked = response.results[0]
-                airplanClicked.graphic.symbol = myClickedPic;
-                showFlightDetails(airplanClicked.graphic.attributes.name);
+                airplanClicked = response.results[0];
+                // click on map
+                if (airplanClicked == null) {
+                    // console.log("mapclick");
+                    if (colorId != -1) {
+                        // found the color row and disable the color
+                        let coloredRow = document.getElementById(colorId);
+                        coloredRow.style.backgroundColor = "white";
+                        colorId = -1;
+                    }
+                }
+                // click on plan
+                else {
+                    if (colorId != -1) {
+                        // found the color row and disable the color
+                        let coloredRow = document.getElementById(colorId);
+                        coloredRow.style.backgroundColor = "white";
+                    }
+                    airplanClicked.graphic.symbol = myClickedPic;
+                    let id = airplanClicked.graphic.attributes.name;
+                    colorId = id;
+                    let coloredRow = document.getElementById(colorId);
+                    coloredRow.style.backgroundColor = "red";
+                    showFlightDetails(id);
+                }
             });
     });
-
-
-
-
-
 
     var airplanPicture = new PictureMarkerSymbol({
         url: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png",
@@ -71,8 +88,9 @@ require([
         currentPath = polylineGraphic;
         var simpleLineSymbol = {
             type: "simple-line",
-            color: [0, 0, 0],
-            width: 3
+            color: "red",
+            width: "2px",
+            style: "short-dot"
         };
         var myPolyline = {
             type: "polyline",
@@ -89,11 +107,11 @@ require([
         graphicsLayer.add(polylineGraphic);
         currentPath = polylineGraphic;
 
-
     }
     function removeSegments() {
         graphicsLayer.remove(currentPath);
     }
+
 
 
     function addPlan(lat, lon, id) {
@@ -113,7 +131,6 @@ require([
 
         airplanGraphic.geometry = point;
         airplanGraphic.symbol = myPic;
-
     }
 
     function updatePlan(lat, lon, id) {
@@ -126,17 +143,17 @@ require([
         apg.geometry = point;
     }
 
-        function removePlanOnMap(id) {
-            var apg = airplansDic[id];
-            graphicsLayer.remove(apg);
-        }
+    function removePlanOnMap(id) {
+        var apg = airplansDic[id];
+        graphicsLayer.remove(apg);
+        delete airplansDic[id];
+    }
 
     window.addPlan = addPlan;
     window.updatePlan = updatePlan;
     window.drawSegments = drawSegments;
-        window.removeSegments = removeSegments;
-        window.removePlanOnMap = removePlanOnMap;
-        window.changePlanPicture = changePlanPicture;
+    window.removeSegments = removeSegments;
+    window.removePlanOnMap = removePlanOnMap;
 });
 
 function drawNewPlan(latitude, longitude, id) {
@@ -165,13 +182,20 @@ function updatePlanOnMap(latitude, longitude, id) {
 function showFlightDetails(id) {
     hidePath();
     getFlightPlan(id);
-
 }
 //cancel the path drawing on the map the cancel the clicked plan
 function changePlanClicked() {
     if (airplanClicked != null) {
         airplanClicked.graphic.symbol = myPic;
     }
+    for (var key in airplansDic) {
+        // check if the property/key is defined in the object itself, not in parent
+        //if (airplansDic.hasOwnProperty(key)) {
+        //    console.log(key, dictionary[key]);
+        //}
+        airplansDic[key].symbol = myPic;
+    }
+    resetDetails();
     hidePath();
 }
 //delete the graphic of the airplan with the given id
@@ -186,4 +210,14 @@ function drawPlan(id, latitude, longitude) {
     } else {
         drawNewPlan(latitude, longitude, id);
     }
+}
+
+// change the symbol (picture) of the plan - CLICKED
+function changePicClicked(id) {
+    airplansDic[id].symbol = myClickedPic;
+}
+
+// change the symbol (picture) of the plan - NOT CLICKED
+function changePicNotClicked(id) {
+    airplansDic[id].symbol = myPic;
 }
