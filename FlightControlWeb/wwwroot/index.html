@@ -3,6 +3,7 @@
 
 <head>
 	<title>Flight Controller</title>
+
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +14,8 @@
 		  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css" />
 	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/custombutton.css" />
+
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="js/jquery-3.1.1.min.js"></script>
@@ -28,14 +31,15 @@
 	<script src="js/main.js"></script>
 	<script src="js/details.js"></script>
 	<script src="js/getFlightsSyncAll.js"></script>
-
 </head>
 
 <body>
-	
+
 	<form id="myForm">
-		<label for="fileInput">Add a new Flight plan</label>
-		<input type="file" id="fileInput" onchange="onChange(event)" />
+		<label for="fileInput">Add a New Flight Plan</label>
+		<input type="file" id="fileInput" onchange="onChange(event)" hidden="hidden" />
+		<button type="button" id="customButton"> CHOOSE A FILE</button>
+		<!--span id="customText">No file chosen yet</!--span-->
 		<script src="js/dragDrop.js"></script>
 	</form>
 	<div class="container-fluid">
