@@ -1,13 +1,14 @@
-﻿//  !!!!!!!!!   need to change!! we cant work just with one specific port!!   !!!!!!!!!
+﻿
+//  !!!!!!!!!   need to change!! we cant work just with one specific port!!   !!!!!!!!!
 let baseURL = "https://localhost:44389";
 
 //    *********************   GET FLIGHTS   *********************
 
 // get the flight over and over, update every 3 sec
 function flightsTable() {
-    getFlights();
+    getFlightsSyncAll();
     setInterval(function () {
-        getFlights();
+        getFlightsSyncAll();
     }, 3000);
 }
 
@@ -16,29 +17,71 @@ async function getFlights() {
     try {
         let currentTime = getCurrentTime();
         // build the request
-        let url = baseURL + "/api/Flights?relative_to=" + currentTime+"&sync_all";
+        let url = baseURL + "/api/Flights?relative_to=" + currentTime;
         let response = await fetch(url);
         // get all flights
         let flightPlans = await response.json();
-        flightPlans.forEach(function (flight) {
-            $(flight).each(function (index, value) {
-                addFlightsTable(value);
-            })
-        });
+        // call function to iterate and get the flights
+        forEachFlights(flightPlans);
         // update the table with new info.
         $('#tbid tbody').empty();
         $('#tbid tbody').append(currentFlights);
         currentFlights = "";
+        if (Object.keys(airplansDic).length > 0) {
+            // check if there is a flight in the map than need to delete
+            updateMap();
+        }
+        // clear array for next getFlights
+        idArray = [];
     }
     catch (err) {
         console.log("GetFlights PROBLEM!" + err.message);
+        errorHandle("get flights error: ", err.message);
     }
 }
 
+// iterate the info from server, and add Flights
+function forEachFlights(flightPlans) {
+    flightPlans.forEach(function (flight) {
+        $(flight).each(function (index, value) {
+            addFlightsTable(value);
+        })
+        // insert id to array, to check if we need to delete from map
+        idArray.push(flight.flight_id);
+    });
+}
+
+// Check if there is old flight in map that we need to delete.
+function updateMap() {
+    $(airplansDic).each(function (key, value) {
+        let id = value[Object.keys(value)[0]].attributes.name;
+        if (idArray.includes(id)) {
+            // do nothing
+        }
+        else {
+            // value (=id) are not in server, so erase it from the map
+            deleteFromMap(id);
+        }
+    });
+}
+
+// Delete flight from map.
+function deleteFromMap(id) {
+    // Delete path
+    removeSegments();
+    // delete flightId from the dictionary in map.js
+    removePlan(id);
+    if (id === colorId) {
+        resetDetails();
+        colorId = -1;
+    }
+}
 
 // currentFlight is string that hold all the info about the flight 
 // that we get from the server (every request).
 let currentFlights = "";
+
+let idArray = [];
 
 let colorId = -1;
 function addFlightsTable(flight) {
@@ -48,9 +91,9 @@ function addFlightsTable(flight) {
         currentFlights += "style=\"background-color: red;\" ";
     }
     currentFlights += "onclick =\"rowClicked(this)\"><td>" + id + "</td>" +
-        "<td>" + flight.company_name + "</td>" +
-        "<td>" + flight.is_external + "</td>";
-    if (!flight.is_external) {
+    "<td>" + flight.company_name + "</td>" +
+    "<td>" + flight.is_external + "</td>";
+    if (!flight.is_external){
         let trash = "<td>";
         trash += "<input class=\"trash\" type=\"image\" src=\"img/trash2.png\"";
         trash += "onclick=\"deleteFlight(this)\"></td></tr>";
@@ -80,7 +123,7 @@ function rowClicked(row) {
         row.style.backgroundColor = "red";
         // update the variable, for the update
         colorId = id;
-        // 2. show details.
+    // 2. show details.
     }
 }
 
@@ -119,17 +162,13 @@ function deleteFlightFromServer(id) {
 }
 
 // Get Current Time
-function getCurrentTime() {
+function getCurrentTime(){
     let d = new Date();
     //let x = d.toISOString();
     let currentTime = d.getFullYear() + "-" + ("00" + (d.getMonth() + 1)).slice(-2) +
         "-" + ("00" + d.getDate()).slice(-2) + "T" + ("00" + d.getHours()).slice(-2) +
         ":" + ("00" + d.getMinutes()).slice(-2) + ":" + ("00" + d.getSeconds()).slice(-2) + "Z";
     return currentTime;
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 //   *************************************************************************************

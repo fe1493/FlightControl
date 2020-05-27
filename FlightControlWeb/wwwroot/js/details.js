@@ -4,8 +4,8 @@
     console.log(urlPath);
     $.getJSON(urlPath, function (data) {
         setDetails(data);
-       }).fail(function (data) {
-        errorHandle(data, data.responseText);
+    }).fail(function (data) {
+        errorHandle(data.status, "Could not find flight plan");
     });
 }
 function setDetails(data) {

@@ -41,9 +41,10 @@ namespace FlightControlWeb.Controllers
 
         // GET: api/FlightPlan/5
         [HttpGet("{id}")]
-        public async Task<ActionResult< FlightPlan>> GetFlightPlan(string id)
+        public async Task<ActionResult<FlightPlan>> GetFlightPlan(string id)
         {
             var fp = memoryCache.Get<FlightPlan>(id);
+            //if the flight plan is from remote server
             if (fp == null)
             {
                 //need to check all the other servers

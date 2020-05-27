@@ -28,13 +28,14 @@ namespace FlightControlWeb.Controllers
         public async Task<List<Flight>> Func(Server servers, string relativeTime)
         {
             HttpRequestClass httpRequestClass = new HttpRequestClass();
-            string param = "/api/flights?relative_to="+relativeTime;
+            string param = "/api/flights?relative_to=" + relativeTime;
             List<Flight> flightsList = new List<Flight>();
             var response = (dynamic)null;
             try
             {
                 response = await httpRequestClass.makeRequest(servers.ServerURL + param);
             }
+            //if time out as occured we return null flight plan
             catch (Exception)
             {
                 return flightsList;
@@ -46,14 +47,14 @@ namespace FlightControlWeb.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<Flight>> GetFlights([FromQuery(Name = "relative_to")]string relativeTime)
-            {
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlights([FromQuery(Name = "relative_to")]string relativeTime)
+        {
             DateTime relativeTo;
             if (!DateTime.TryParse(relativeTime, out relativeTo))
             {
                 return null;
             }
-            //set the urc time zone
+            //set the utc time zone
             relativeTo = relativeTo.ToUniversalTime();
 
             List<Flight> flightsList = new List<Flight>();

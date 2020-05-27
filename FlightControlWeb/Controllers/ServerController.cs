@@ -21,13 +21,17 @@ namespace FlightControlWeb.Controllers
         }
         // GET:    /api/servers
         [HttpGet]
-        public IEnumerable<Server> Get()
+        public ActionResult<IEnumerable<Server>> Get()
         {
 
             List<Server> serverslist = new List<Server>();
 
 
             List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
+            if (serverIdKeysList == null)
+            {
+                return BadRequest("Could not find any servers");
+            }
 
             foreach (var id in serverIdKeysList)
             {

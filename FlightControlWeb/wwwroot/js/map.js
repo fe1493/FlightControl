@@ -1,5 +1,4 @@
-﻿
-let myPic;
+﻿let myPic;
 let myClickedPic;
 let airplansDic = {};
 let currentPath;
@@ -34,7 +33,7 @@ require([
         url: "https://cdn0.iconfinder.com/data/icons/vehicles-23/64/vehicles-23-512.png",
         width: "80px",
         height: "80px"
-
+            
 
     });
     myClickedPic = alterAirplanPicture;
@@ -143,17 +142,17 @@ require([
         apg.geometry = point;
     }
 
-    function removePlanOnMap(id) {
-        var apg = airplansDic[id];
-        graphicsLayer.remove(apg);
-        delete airplansDic[id];
-    }
+        function removePlanOnMap(id) {
+            var apg = airplansDic[id];
+            graphicsLayer.remove(apg);
+            delete airplansDic[id];
+        }
 
     window.addPlan = addPlan;
     window.updatePlan = updatePlan;
     window.drawSegments = drawSegments;
-    window.removeSegments = removeSegments;
-    window.removePlanOnMap = removePlanOnMap;
+        window.removeSegments = removeSegments;
+        window.removePlanOnMap = removePlanOnMap;
 });
 
 function drawNewPlan(latitude, longitude, id) {
@@ -173,10 +172,7 @@ function hidePath() {
 
 function updatePlanOnMap(latitude, longitude, id) {
     updatePlan(latitude, longitude, id);
-
 }
-
-
 
 //this method calls the getFlightDetails method in details.js and update the "flight details" section
 function showFlightDetails(id) {

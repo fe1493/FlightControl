@@ -32,8 +32,6 @@ namespace FlightControlWeb
 
             services.AddSingleton<IFlightManager, MyFlightManager>();
 
-
-
             services.AddControllers();
             
             services.AddRouting();
