@@ -1,4 +1,11 @@
 ﻿let input = document.getElementById("fileInput");
+let customButton = document.getElementById("customButton"); 
+let customText = document.getElementById("customText"); 
+
+customButton.addEventListener('click', function () {
+    input.click();
+});
+
 let allowedExtension = /(\.json)$/i;
 function onChange(event) {
     let file = event.target.files[0];
@@ -14,7 +21,9 @@ function onChange(event) {
     reader.onload = (event) => {
         // file content
         let obj = JSON.parse(reader.result);
-        testPostflightplan(obj);
+        // ********************  NEED TO DELETE BEFORE SUBMIT !!!!! **************************
+        obj.initial_location.date_time = getCurrentTime();
+        postflightplan(obj);
     }
     $("#fileInput").val('');
     reader.onerror = error => reject(error);

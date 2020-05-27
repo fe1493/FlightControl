@@ -1,3 +1,4 @@
+
 #map {
     height: 500px;
     width: 1000px;
@@ -24,3 +25,25 @@
 #lonFin {
     margin-left: 136px;
 }
+
+#customButton{
+    padding: 10px;
+    color: white;
+    background-color:green;
+    border:1px solid #000000; 
+    border-radius: 5px;
+    cursor:pointer;
+}
+
+#customButton:hover{
+    background-color:#00b28f;
+}
+
+#customText{
+    margin-left: 10px;
+    font-family: sans-serif; 
+    color:#aaa;
+}
+
+
+
