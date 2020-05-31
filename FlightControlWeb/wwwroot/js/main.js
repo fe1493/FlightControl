@@ -36,6 +36,7 @@ async function getFlights() {
     }
     catch (err) {
         console.log("GetFlights PROBLEM!" + err.message);
+        errorHandle("get flights error: ", err.message);
     }
 }
 

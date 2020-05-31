@@ -9,5 +9,6 @@ namespace FlightControlWeb.Models
     {
         Flight CreateUpdatedFlight(FlightPlan flightPlan, DateTime dateTime);
         string CreateIdentifier(FlightPlan flightPlan);
+        void SetExternalFlights(IEnumerable<Flight> flightsFromServer);
     }
 }

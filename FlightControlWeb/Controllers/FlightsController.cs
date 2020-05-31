@@ -28,9 +28,18 @@ namespace FlightControlWeb.Controllers
         public async Task<List<Flight>> Func(Server servers, string relativeTime)
         {
             HttpRequestClass httpRequestClass = new HttpRequestClass();
-            string param = "/api/flights"+relativeTime;
-            var response = await httpRequestClass.makeRequest(servers.ServerURL + param);
+            string param = "/api/flights?relative_to=" + relativeTime;
             List<Flight> flightsList = new List<Flight>();
+            var response = (dynamic)null;
+            try
+            {
+                response = await httpRequestClass.makeRequest(servers.ServerURL + param);
+            }
+            //if time out as occured we return null flight plan
+            catch (Exception)
+            {
+                return flightsList;
+            }
             flightsList = JsonConvert.DeserializeObject<List<Flight>>(response);
             return flightsList;
         }
@@ -38,14 +47,14 @@ namespace FlightControlWeb.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<Flight>> GetFlights([FromQuery(Name = "relative_to")]string relativeTime)
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlights([FromQuery(Name = "relative_to")]string relativeTime)
         {
             DateTime relativeTo;
             if (!DateTime.TryParse(relativeTime, out relativeTo))
             {
                 return null;
             }
-            //set the urc time zone
+            //set the utc time zone
             relativeTo = relativeTo.ToUniversalTime();
 
             List<Flight> flightsList = new List<Flight>();
@@ -96,6 +105,7 @@ namespace FlightControlWeb.Controllers
                 foreach (var flight in flightsList)
                 {
                     flightsKeysList.Add(flight.FlightId);
+                    flightManager.SetExternalFlights(flightsList);
                 }
 
                 //create map/dictonary
@@ -118,6 +128,28 @@ namespace FlightControlWeb.Controllers
 
             }
             return flightsList;
+
+
+        }
+        // DELETE: api/Flights/5
+        [HttpDelete("{id}")]
+        public ActionResult Delete(string id)
+        {
+            //check if other servers have the id and erase it
+            List<string> fpKeys = memoryCache.Get("flightListKeys") as List<string>;
+
+            FlightPlan fp = new FlightPlan();
+            if (!memoryCache.TryGetValue(id, out fp))
+            {
+                return BadRequest();
+            }
+            else
+            {
+                fpKeys.Remove(id);
+                memoryCache.Remove(id);
+                return Ok();
+            }
+
 
 
         }

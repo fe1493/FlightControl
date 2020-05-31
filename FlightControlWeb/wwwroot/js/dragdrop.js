@@ -1,4 +1,11 @@
 ﻿let input = document.getElementById("fileInput");
+let customButton = document.getElementById("customButton");
+let customText = document.getElementById("customText");
+
+customButton.addEventListener('click', function () {
+    input.click();
+});
+
 let allowedExtension = /(\.json)$/i;
 function onChange(event) {
     let file = event.target.files[0];

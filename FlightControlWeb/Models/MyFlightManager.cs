@@ -44,7 +44,7 @@ namespace FlightControlWeb.Models
         }
 
         //this function calculates the distance in seconds between the relative time to flight departure
-        public double SecondsGap(DateTime flightPlanInitialTime, DateTime relativeTime)
+        private double SecondsGap(DateTime flightPlanInitialTime, DateTime relativeTime)
         {
             TimeSpan timeSpan = relativeTime - flightPlanInitialTime;
             double secondsTimeSpan = timeSpan.TotalSeconds;
@@ -52,7 +52,7 @@ namespace FlightControlWeb.Models
 
         }
 
-        public Segment InitialLocationToSegment(FlightPlan flightPlan)
+        private Segment InitialLocationToSegment(FlightPlan flightPlan)
         {
             Segment segment = new Segment();
             segment.Latitude = flightPlan.InitialLocation.Latitude;
@@ -60,7 +60,7 @@ namespace FlightControlWeb.Models
             segment.TimespanSeconds = 0;
             return segment;
         }
-        public Flight CreateCurrentFlight(FlightPlan flightPlan, Point currentLocation, DateTime relativeTime)
+        private Flight CreateCurrentFlight(FlightPlan flightPlan, Point currentLocation, DateTime relativeTime)
         {
             Flight flight = new Flight();
             flight.CompanyName = flightPlan.CompanyName;
@@ -104,5 +104,13 @@ namespace FlightControlWeb.Models
 
             return builder.ToString();
         }
+        public void SetExternalFlights(IEnumerable<Flight> flightsFromServer)
+        {
+            foreach (var flight in flightsFromServer)
+            {
+                flight.IsExternal = true;
+            }
+        }
+
     }
 }
