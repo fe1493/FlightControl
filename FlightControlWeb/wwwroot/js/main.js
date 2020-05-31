@@ -1,6 +1,4 @@
 ﻿
-//  !!!!!!!!!   need to change!! we cant work just with one specific port!!   !!!!!!!!!
-// let baseURL = "https://localhost:44389";
 let baseURL = "..";
 
 //    *********************   GET FLIGHTS   *********************
@@ -37,6 +35,7 @@ async function getFlights() {
     }
     catch (err) {
         console.log("GetFlights PROBLEM!" + err.message);
+        errorHandle("get flights error: ", err.message);
     }
 }
 
@@ -156,7 +155,7 @@ function deleteFlightFromServer(id) {
         url: url,
         type: 'DELETE',
         success: function (result) {
-            console.log(result);
+           
         }
     });
 }
@@ -170,48 +169,3 @@ function getCurrentTime(){
         ":" + ("00" + d.getMinutes()).slice(-2) + ":" + ("00" + d.getSeconds()).slice(-2) + "Z";
     return currentTime;
 }
-
-//   *************************************************************************************
-//   ***********************************   OLD CODE - NOT IN USE  ************************
-//   *************************************************************************************
-
-//function getFlights() {
-//    let currentTime = getCurrentTime();
-//    let url = baseURL+ "/api/Flights?relative_to=" + currentTime;
-//    $.getJSON(url, function (data) {
-//        data.forEach(function (flight) {
-//            $(flight).each(function (index, value) {
-//                addFlightsTable(value);
-//            })
-//        })
-//        $('#tbid tbody').empty();
-//        $('#tbid tbody').append(currentFlights);
-//        currentFlights="";
-//    });
-//}
-
-//$("#tbid tr.flight").click(function () {
-//    let id = $(this)[0].innerHTML;
-//    console.log(id)
-//});
-
-//function addflightplan() {
-
-//    let postOption = preparePost(flightplan);
-//    fetch("/api/flightplan", postOption).
-//        then(response => response.json).
-//        catch(error => console.log(error));
-
-//}
-
-//function preparePost(flightplan) {
-//    let flighplanAsSrt = JSON.stringify(flightplan);
-//    return {
-//        "method": 'POST',
-//        "headers": {
-//            'Accept': 'application/json',
-//            'Content-Type': 'application/json'
-//        },
-//        "body": flighplanAsSrt
-//    }
-//}

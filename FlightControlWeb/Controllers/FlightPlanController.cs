@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
@@ -43,9 +41,10 @@ namespace FlightControlWeb.Controllers
 
         // GET: api/FlightPlan/5
         [HttpGet("{id}")]
-        public async Task<FlightPlan> GetFlightPlan(string id)
+        public async Task<ActionResult<FlightPlan>> GetFlightPlan(string id)
         {
             var fp = memoryCache.Get<FlightPlan>(id);
+            //if the flight plan is from remote server
             if (fp == null)
             {
                 //need to check all the other servers
@@ -56,7 +55,7 @@ namespace FlightControlWeb.Controllers
                 if (!memoryCache.TryGetValue("keyOfMyDictonary", out myDictonary))
                 {
                     // no flight plan with that id
-                    return null;
+                    return BadRequest("No flight plan with that id");
                 }
                 else
                 {
