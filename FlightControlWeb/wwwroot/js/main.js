@@ -1,6 +1,7 @@
 ﻿
 //  !!!!!!!!!   need to change!! we cant work just with one specific port!!   !!!!!!!!!
-let baseURL = "https://localhost:44389";
+// let baseURL = "https://localhost:44389";
+let baseURL = "..";
 
 //    *********************   GET FLIGHTS   *********************
 
@@ -116,7 +117,7 @@ function rowClicked(row) {
             // found the preaviuos row and disable the color
             let coloredRow = document.getElementById(colorId);
             changePicNotClicked(colorId);
-            coloredRow.style.backgroundColor = "white";
+            coloredRow.style.backgroundColor = "Antique white";
         }
         // 1. color the row.
         row.style.backgroundColor = "red";

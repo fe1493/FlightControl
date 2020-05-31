@@ -12,3 +12,30 @@
 #tbid {
     text-align: center;
 }
+
+#property {
+    font-size: large;
+}
+
+#lonIni {
+    margin-left: 145px;
+}
+
+#lonFin {
+    margin-left: 136px;
+}
+#error {
+    height: 12px;
+    display: inline;
+    margin-left: 10px;
+}
+#error p {
+    font-family: Arial;
+    font-size: 1.3em;
+    margin-top: -14px
+}
+
+#topBlock {
+    display: flex;
+    justify-content: left;
+}

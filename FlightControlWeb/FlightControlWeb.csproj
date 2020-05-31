@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\css\bootstrap.css.map" />
+    <None Include="wwwroot\css\bootstrap.min.css.map" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.0" />
     <PackageReference Include="jquery" Version="3.5.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
