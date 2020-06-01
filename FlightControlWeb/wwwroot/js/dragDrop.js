@@ -1,6 +1,6 @@
 ﻿let input = document.getElementById("fileInput");
-let customButton = document.getElementById("customButton"); 
-let customText = document.getElementById("customText"); 
+let customButton = document.getElementById("customButton");
+let customText = document.getElementById("customText");
 
 customButton.addEventListener('click', function () {
     input.click();
