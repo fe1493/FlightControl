@@ -11,7 +11,7 @@ namespace FlightControlWeb.Models
 {
     public class HttpRequestClass
     {
-        public async Task<dynamic> makeRequest(string url)
+        public async Task<dynamic> MakeRequest(string url)
         {
             using var client = new HttpClient();
             //set time out for the request

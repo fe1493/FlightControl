@@ -31,7 +31,7 @@ namespace FlightControlWeb.Controllers
         {
 
             HttpRequestClass httpRequestClass = new HttpRequestClass();
-            var result = await httpRequestClass.makeRequest(servers.ServerURL + param);
+            var result = await httpRequestClass.MakeRequest(servers.ServerURL + param);
 
 
             FlightPlan fp = new FlightPlan();

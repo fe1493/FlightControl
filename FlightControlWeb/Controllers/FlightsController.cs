@@ -33,7 +33,7 @@ namespace FlightControlWeb.Controllers
             var response = (dynamic)null;
             try
             {
-                response = await httpRequestClass.makeRequest(servers.ServerURL + param);
+                response = await httpRequestClass.MakeRequest(servers.ServerURL + param);
             }
             //if time out as occured we return null flight plan
             catch (Exception)
@@ -52,13 +52,15 @@ namespace FlightControlWeb.Controllers
             DateTime relativeTo;
             if (!DateTime.TryParse(relativeTime, out relativeTo))
             {
+                //TODO: write a good message
                 return null;
             }
             //set the utc time zone
             relativeTo = relativeTo.ToUniversalTime();
 
             List<Flight> flightsList = new List<Flight>();
-            if (Request.Query.ContainsKey("sync_all"))
+            
+            if (Request != null && Request.Query.ContainsKey("sync_all"))
             {
                 List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
                 if (serverIdKeysList != null)
@@ -70,6 +72,7 @@ namespace FlightControlWeb.Controllers
 
 
             }
+           
             //list of keys of flight plans in our server
             List<string> fpListOfKeys = memoryCache.Get("flightListKeys") as List<string>;
             if (fpListOfKeys != null)
@@ -90,6 +93,8 @@ namespace FlightControlWeb.Controllers
             }
             return flightsList;
         }
+
+
 
         public async Task<IEnumerable<Flight>> GetFlightsRemoteServers(List<string> serverIdKeysList, string relativeTime)
         {
