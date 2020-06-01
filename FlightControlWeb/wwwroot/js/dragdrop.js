@@ -33,13 +33,20 @@ function onChange(event) {
 // Function that takes the new flight plan and posts it to the server
 function postflightplan(flightPlan) {
     (async () => {
-        const rawResponse = await fetch("https://localhost:44389/api/flightplan", {
+        const rawResponse = await fetch("../api/flightplan", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(flightPlan)
+            
+            
         });
+        //if the flight plan locations are invalid
+        if (rawResponse.status == 400) {
+            errorHandle(rawResponse.status, "Invalid flight plan details");
+        }
+        
     })();
 }

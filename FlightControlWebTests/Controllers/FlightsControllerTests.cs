@@ -8,7 +8,6 @@ using Microsoft.Extensions.Caching.Memory;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using LazyCache.Mocks;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 
@@ -94,7 +93,6 @@ namespace FlightControlWeb.Controllers.Tests
         public void DeleteFlightReturnsBadRequest()
         {
             //Arrange
-            var controllerContext = new ControllerContext();
             var mockManager = new Mock<IFlightManager>();
             FlightsController flightsController = new FlightsController(mockManager.Object, cache);
 

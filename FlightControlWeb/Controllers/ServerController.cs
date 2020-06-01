@@ -54,8 +54,14 @@ namespace FlightControlWeb.Controllers
             {
                 return BadRequest("Server id is already exist");
             }
-            memoryCache.Set(server.ServerId, server);
+            //remove the '/' in the end of the url, if exist
+            string checkURL = server.ServerURL;
+            if (checkURL[checkURL.Length-1] == '/')
+            {
+                server.ServerURL = checkURL.Substring(0, checkURL.Length - 1);
+            }
 
+            memoryCache.Set(server.ServerId, server);
 
             List<string> serverIdKeysList = new List<string>();
             if (!memoryCache.TryGetValue("serverListKeys", out serverIdKeysList))
