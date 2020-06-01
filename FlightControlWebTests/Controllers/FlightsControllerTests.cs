@@ -93,7 +93,6 @@ namespace FlightControlWeb.Controllers.Tests
         public void DeleteFlightReturnsBadRequest()
         {
             //Arrange
-            var controllerContext = new ControllerContext();
             var mockManager = new Mock<IFlightManager>();
             FlightsController flightsController = new FlightsController(mockManager.Object, cache);
 

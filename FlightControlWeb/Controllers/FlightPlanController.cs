@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
@@ -31,12 +32,19 @@ namespace FlightControlWeb.Controllers
         {
 
             HttpRequestClass httpRequestClass = new HttpRequestClass();
-            var result = await httpRequestClass.makeRequest(servers.ServerURL + param);
+            try
+            {
+                var result = await httpRequestClass.MakeRequest(servers.ServerURL + param);
+                FlightPlan fp = new FlightPlan();
+                fp = JsonConvert.DeserializeObject<FlightPlan>(result);
+                return fp;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
 
 
-            FlightPlan fp = new FlightPlan();
-            fp = JsonConvert.DeserializeObject<FlightPlan>(result);
-            return fp;
         }
 
         // GET: api/FlightPlan/5
@@ -75,6 +83,10 @@ namespace FlightControlWeb.Controllers
                                 FlightPlan flightPlan = new FlightPlan();
                                 string param = "/api/FlightPlan/";
                                 flightPlan = await GetFlightPlanByIdFromServer(server, param + flightId);
+                                if (flightPlan == null)
+                                {
+                                    return BadRequest("Could not get flight details");
+                                }
 
                                 return flightPlan;
                             }
@@ -89,6 +101,10 @@ namespace FlightControlWeb.Controllers
         [HttpPost]
         public ActionResult<string> Post([FromBody] FlightPlan flightPlan)
         {
+            if (flightManager.IsSegmentsValid(flightPlan) == false)
+            {
+                return BadRequest("Invalid flightplan location");
+            }
             string flightPlanId = flightManager.CreateIdentifier(flightPlan);
             flightPlan.FlightPlanId = flightPlanId;
             memoryCache.Set(flightPlan.FlightPlanId, flightPlan);

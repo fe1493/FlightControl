@@ -111,6 +111,22 @@ namespace FlightControlWeb.Models
                 flight.IsExternal = true;
             }
         }
+        public bool IsSegmentsValid(FlightPlan flightplan)
+        {
+            FlightPlan.Location location = flightplan.InitialLocation;
+            if (location.Latitude < -90 || location.Latitude > 90 || location.Longitude > 180 || location.Longitude < -180)
+                return false;
+            List<Segment> segments = flightplan.Segments;
+            int segmentsLen = segments.Count;
+            for (int i = 0; i < segmentsLen; i++)
+            {
+                Segment segment = segments[i];
+                if (segment.Latitude < -90 || segment.Latitude > 90 || segment.Longitude > 180 || segment.Longitude < -180)
+                    return false;
+            }
+
+            return true;
+        }
 
     }
 }

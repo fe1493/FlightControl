@@ -33,7 +33,7 @@ namespace FlightControlWeb.Controllers
             var response = (dynamic)null;
             try
             {
-                response = await httpRequestClass.makeRequest(servers.ServerURL + param);
+                response = await httpRequestClass.MakeRequest(servers.ServerURL + param);
             }
             //if time out as occured we return null flight plan
             catch (Exception)
