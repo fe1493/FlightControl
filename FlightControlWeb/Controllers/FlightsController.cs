@@ -58,7 +58,7 @@ namespace FlightControlWeb.Controllers
             relativeTo = relativeTo.ToUniversalTime();
 
             List<Flight> flightsList = new List<Flight>();
-            if (Request.Query.ContainsKey("sync_all"))
+            if (Request != null && Request.Query.ContainsKey("sync_all"))
             {
                 List<string> serverIdKeysList = memoryCache.Get("serverListKeys") as List<string>;
                 if (serverIdKeysList != null)
