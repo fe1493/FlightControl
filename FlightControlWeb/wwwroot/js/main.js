@@ -1,10 +1,9 @@
-﻿
-let baseURL = "..";
+﻿let baseURL = "..";
 
 //    *********************   GET FLIGHTS   *********************
 
 // get the flight over and over, update every 3 sec
-function flightsTable() {
+ function flightsTable() {
     getFlightsSyncAll();
     setInterval(function () {
         getFlightsSyncAll();
@@ -12,11 +11,11 @@ function flightsTable() {
 }
 
 // ASYNC - get flights from the sever, according to current time
-async function getFlights() {
+ async function getFlights() {
     try {
         let currentTime = getCurrentTime();
         // build the request
-        let url = baseURL + "/api/Flights?relative_to=" + currentTime;
+        let url = baseURL + '/api/Flights?relative_to=' + currentTime;
         let response = await fetch(url);
         // get all flights
         let flightPlans = await response.json();
@@ -34,8 +33,8 @@ async function getFlights() {
         idArray = [];
     }
     catch (err) {
-        console.log("GetFlights PROBLEM!" + err.message);
-        errorHandle("get flights error: ", err.message);
+        console.log('GetFlights PROBLEM!' + err.message);
+        errorHandle('get flights error: ', err.message);
     }
 }
 
@@ -171,14 +170,14 @@ function deleteFlightFromServer(id) {
     $.ajax({
         url: url,
         type: 'DELETE',
-        success: function (result) {
+        success: function () {
            
         }
     });
 }
 
 // Get Current Time
-function getCurrentTime(){
+ function getCurrentTime(){
     let d = new Date();
     //let x = d.toISOString();
     let currentTime = d.getFullYear() + "-" + ("00" + (d.getMonth() + 1)).slice(-2) +

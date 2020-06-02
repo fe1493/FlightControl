@@ -28,7 +28,7 @@
 
      }).fail(function (data) {
          errorHandle(data.status, "Could not find flight plan");
-     });;
+     });
 }
 
 function setInitialLocation(initialLocation) {
@@ -55,7 +55,7 @@ function setFinalLocation(finalLocation) {
     finalLocationLat.innerHTML = finalLocation["latitude"].toFixed(3);
     let finalLocationLon = document.getElementById("finloclon");
     finalLocationLon.innerHTML = finalLocation["longitude"].toFixed(3);
-};
+}
 
 function resetDetails() {
     let company = document.getElementById("cmpny");

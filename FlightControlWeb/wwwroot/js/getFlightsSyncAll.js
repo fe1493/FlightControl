@@ -1,5 +1,5 @@
 ﻿// ASYNC - get flights from the sever, according to current time
-async function getFlightsSyncAll() {
+ async function getFlightsSyncAll() {
     try {
         let currentTime = getCurrentTime();
         // build the request
