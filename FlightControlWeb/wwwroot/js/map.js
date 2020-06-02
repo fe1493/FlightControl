@@ -51,7 +51,7 @@ require([
                     if (colorId != -1) {
                         // found the color row and disable the color
                         let coloredRow = document.getElementById(colorId);
-                        coloredRow.style.backgroundColor = "Antique white";
+                        coloredRow.style.backgroundColor = "antiquewhite";
                         colorId = -1;
                     }
                 }
@@ -60,7 +60,7 @@ require([
                     if (colorId != -1) {
                         // found the color row and disable the color
                         let coloredRow = document.getElementById(colorId);
-                        coloredRow.style.backgroundColor = "Antique white";
+                        coloredRow.style.backgroundColor = "antiquewhite";
                     }
                     airplanClicked.graphic.symbol = myClickedPic;
                     let id = airplanClicked.graphic.attributes.name;

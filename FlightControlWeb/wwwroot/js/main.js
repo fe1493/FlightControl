@@ -52,16 +52,15 @@ function forEachFlights(flightPlans) {
 
 // Check if there is old flight in map that we need to delete.
 function updateMap() {
-    $(airplansDic).each(function (key, value) {
-        let id = value[Object.keys(value)[0]].attributes.name;
-        if (idArray.includes(id)) {
+    for (const [key, value] of Object.entries(airplansDic)) {
+        if (idArray.includes(key)) {
             // do nothing
         }
         else {
             // value (=id) are not in server, so erase it from the map
-            deleteFromMap(id);
+            deleteFromMap(key);
         }
-    });
+    }
 }
 
 // Delete flight from map.
@@ -109,21 +108,39 @@ function addFlightsTable(flight) {
 function rowClicked(row) {
     let id = row.cells[0].innerHTML;
     if (id in airplansDic) {
-        showFlightDetails(id);
-        changePicClicked(id);
-        // another flight has chosen
-        if (colorId != -1) {
-            // found the preaviuos row and disable the color
-            let coloredRow = document.getElementById(colorId);
-            changePicNotClicked(colorId);
-            coloredRow.style.backgroundColor = "Antique white";
-        }
-        // 1. color the row.
-        row.style.backgroundColor = "red";
-        // update the variable, for the update
-        colorId = id;
-    // 2. show details.
+        changeId(id)
+
+        //changePicClicked(id);
+        //// another flight has chosen
+        //if (colorId != -1) {
+        //    // found the preaviuos row and disable the color
+        //    let coloredRow = document.getElementById(colorId);
+        //    changePicNotClicked(colorId);
+        //    coloredRow.style.backgroundColor = "antiquewhite";
+        //}
+        //// color the row.
+        //row.style.backgroundColor = "red";
+        //// update the variable, for the update
+        //colorId = id;
+        //// show details.
+        //showFlightDetails(id);
     }
+}
+
+function changeId(id) {
+    let row = document.getElementById(id);
+    if (colorId != -1) {
+        // found the preaviuos row and disable the color
+        let coloredRow = document.getElementById(colorId);
+        changePicNotClicked(colorId);
+        coloredRow.style.backgroundColor = "antiquewhite";
+    }
+    // color the row.
+    row.style.backgroundColor = "red";
+    // update the variable, for the update
+    colorId = id;
+    changePicClicked(id);
+    showFlightDetails(id);
 }
 
 // Delete all the info of the flightplan,

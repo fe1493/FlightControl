@@ -22,5 +22,6 @@ async function getFlightsSyncAll() {
     }
     catch (err) {
         console.log("GetFlightsSyncAll PROBLEM! " + err.message);
+        errorHandle("get flights error: ", err.message);
     }
 }
