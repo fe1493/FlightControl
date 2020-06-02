@@ -26,7 +26,9 @@
         setFinalLocation(flightSegments[i - 1]);
 
 
-    });
+     }).fail(function (data) {
+         errorHandle(data.status, "Could not find flight plan");
+     });;
 }
 
 function setInitialLocation(initialLocation) {

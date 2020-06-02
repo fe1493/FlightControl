@@ -40,6 +40,13 @@ function postflightplan(flightPlan) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(flightPlan)
+            
+            
         });
+        //if the flight plan locations are invalid
+        if (rawResponse.status == 400) {
+            errorHandle(rawResponse.status, "Invalid flight plan details");
+        }
+        
     })();
 }
