@@ -1,5 +1,4 @@
-﻿
-let baseURL = "..";
+﻿let baseURL = "..";
 
 //    *********************   GET FLIGHTS   *********************
 
@@ -14,10 +13,10 @@ function flightsTable() {
 // ASYNC - get flights from the sever, according to current time
 async function getFlights() {
     try {
-        let currentTime = getCurrentTime();
+        const currentTime = getCurrentTime();
         // build the request
-        let url = baseURL + "/api/Flights?relative_to=" + currentTime;
-        let response = await fetch(url);
+        let url = baseURL + '/api/Flights?relative_to=' + currentTime;
+        const response = await fetch(url);
         // get all flights
         let flightPlans = await response.json();
         // call function to iterate and get the flights
@@ -34,8 +33,8 @@ async function getFlights() {
         idArray = [];
     }
     catch (err) {
-        console.log("GetFlights PROBLEM!" + err.message);
-        errorHandle("get flights error: ", err.message);
+        console.log('GetFlights PROBLEM!' + err.message);
+        errorHandle('get flights error: ', err.message);
     }
 }
 
@@ -83,15 +82,15 @@ let idArray = [];
 
 let colorId = -1;
 function addFlightsTable(flight) {
-    let id = flight.flight_id;
+    const id = flight.flight_id;
     currentFlights += "<tr id=\"" + id + "\"";
     if (id === colorId) {
         currentFlights += "style=\"background-color: red;\" ";
     }
     currentFlights += "onclick =\"rowClicked(this)\"><td>" + id + "</td>" +
-    "<td>" + flight.company_name + "</td>" +
-    "<td>" + flight.is_external + "</td>";
-    if (!flight.is_external){
+        "<td>" + flight.company_name + "</td>" +
+        "<td>" + flight.is_external + "</td>";
+    if (!flight.is_external) {
         let trash = "<td>";
         trash += "<input class=\"trash\" type=\"image\" src=\"img/trash2.png\"";
         trash += "onclick=\"deleteFlight(this)\"></td></tr>";
@@ -128,10 +127,10 @@ function rowClicked(row) {
 }
 
 function changeId(id) {
-    let row = document.getElementById(id);
+    const row = document.getElementById(id);
     if (colorId != -1) {
         // found the preaviuos row and disable the color
-        let coloredRow = document.getElementById(colorId);
+        const coloredRow = document.getElementById(colorId);
         changePicNotClicked(colorId);
         coloredRow.style.backgroundColor = "antiquewhite";
     }
@@ -171,17 +170,17 @@ function deleteFlightFromServer(id) {
     $.ajax({
         url: url,
         type: 'DELETE',
-        success: function (result) {
-           
+        success: function () {
+
         }
     });
 }
 
 // Get Current Time
-function getCurrentTime(){
-    let d = new Date();
+function getCurrentTime() {
+    const d = new Date();
     //let x = d.toISOString();
-    let currentTime = d.getFullYear() + "-" + ("00" + (d.getMonth() + 1)).slice(-2) +
+    const currentTime = d.getFullYear() + "-" + ("00" + (d.getMonth() + 1)).slice(-2) +
         "-" + ("00" + d.getDate()).slice(-2) + "T" + ("00" + d.getHours()).slice(-2) +
         ":" + ("00" + d.getMinutes()).slice(-2) + ":" + ("00" + d.getSeconds()).slice(-2) + "Z";
     return currentTime;

@@ -1,17 +1,17 @@
 ﻿function getFlightPlan(id) {
     var url = baseURL + "/api/flightplan/";
-     var urlPath = url.concat(id.toString());
-     $.getJSON(urlPath, function (data) {
-        let company = document.getElementById("cmpny");
+    var urlPath = url.concat(id.toString());
+    $.getJSON(urlPath, function (data) {
+        const company = document.getElementById("cmpny");
         company.innerHTML = data["company_name"];
 
-        let passengers = document.getElementById("psng")
+        const passengers = document.getElementById("psng")
         passengers.innerHTML = data["passengers"];
 
-        let initialLocation = data["initial_location"];
+        const initialLocation = data["initial_location"];
         setInitialLocation(initialLocation);
 
-        var date = new Date();
+        const date = new Date();
         date.toUTCString(initialLocation["date_time"]);
         setDepartureTime(date);
 
@@ -26,60 +26,59 @@
         setFinalLocation(flightSegments[i - 1]);
 
 
-     }).fail(function (data) {
-         errorHandle(data.status, "Could not find flight plan");
-     });;
+    }).fail(function (data) {
+        errorHandle(data.status, "Could not find flight plan");
+    });
 }
 
 function setInitialLocation(initialLocation) {
-    let initialLocationLat = document.getElementById("iniloclat");
+    const initialLocationLat = document.getElementById("iniloclat");
     initialLocationLat.innerHTML = initialLocation["latitude"].toFixed(3);
-    let initialLocationLon = document.getElementById("iniloclon");
+    const initialLocationLon = document.getElementById("iniloclon");
     initialLocationLon.innerHTML = initialLocation["longitude"].toFixed(3);
 }
 
 function setDepartureTime(date) {
-    let initialLocationTime = document.getElementById("dep");
+    const initialLocationTime = document.getElementById("dep");
     initialLocationTime.innerHTML = date;
 }
 
 function setArrivalTime(date, flightTime) {
-    var arrivalDate = new Date();
+    const arrivalDate = new Date();
     arrivalDate.setSeconds(date.getSeconds() + flightTime);
-    let arrivalTime = document.getElementById("arvl");
+    const arrivalTime = document.getElementById("arvl");
     arrivalTime.innerHTML = arrivalDate;
 }
 
 function setFinalLocation(finalLocation) {
-    let finalLocationLat = document.getElementById("finloclat");
+    const finalLocationLat = document.getElementById("finloclat");
     finalLocationLat.innerHTML = finalLocation["latitude"].toFixed(3);
-    let finalLocationLon = document.getElementById("finloclon");
+    const finalLocationLon = document.getElementById("finloclon");
     finalLocationLon.innerHTML = finalLocation["longitude"].toFixed(3);
-};
+}
 
 function resetDetails() {
-    let company = document.getElementById("cmpny");
+    const company = document.getElementById("cmpny");
     company.innerHTML = "";
 
-    let passengers = document.getElementById("psng")
+    const passengers = document.getElementById("psng")
     passengers.innerHTML = "";
 
-    let initialLocationLat = document.getElementById("iniloclat");
+    const initialLocationLat = document.getElementById("iniloclat");
     initialLocationLat.innerHTML = "";
 
-    let initialLocationLon = document.getElementById("iniloclon");
+    const initialLocationLon = document.getElementById("iniloclon");
     initialLocationLon.innerHTML = "";
 
-    let arrivalTime = document.getElementById("arvl");
+    const arrivalTime = document.getElementById("arvl");
     arrivalTime.innerHTML = "";
 
-    let initialLocationTime = document.getElementById("dep");
+    const initialLocationTime = document.getElementById("dep");
     initialLocationTime.innerHTML = "";
 
-    let finalLocationLat = document.getElementById("finloclat");
+    const finalLocationLat = document.getElementById("finloclat");
     finalLocationLat.innerHTML = "";
 
-    let finalLocationLon = document.getElementById("finloclon");
+    const finalLocationLon = document.getElementById("finloclon");
     finalLocationLon.innerHTML = "";
-
 }

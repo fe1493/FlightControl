@@ -13,23 +13,23 @@ require([
     "esri/symbols/PictureMarkerSymbol"
 ], function (Map, MapView, Graphic, GraphicsLayer, PictureMarkerSymbol) {
 
-    var map = new Map({
+    const map = new Map({
         basemap: "streets"
     });
 
 
 
-    var view = new MapView({
+    const view = new MapView({
         container: "map",
         map: map,
         center: [33.80, 32.2700],
         zoom: 3
     });
 
-    var graphicsLayer = new GraphicsLayer();
+    const graphicsLayer = new GraphicsLayer();
     map.add(graphicsLayer);
 
-    var alterAirplanPicture = new PictureMarkerSymbol({
+    const alterAirplanPicture = new PictureMarkerSymbol({
         url: "https://cdn0.iconfinder.com/data/icons/vehicles-23/64/vehicles-23-512.png",
         width: "80px",
         height: "80px"
@@ -40,7 +40,7 @@ require([
 
     //event of click on airplan        
     view.on("click", function (evt) {
-        var screenPoint = evt.screenPoint;
+        const screenPoint = evt.screenPoint;
         view.hitTest(screenPoint)
             .then(function (response) {
                 changePlanClicked();
@@ -50,7 +50,7 @@ require([
                     // console.log("mapclick");
                     if (colorId != -1) {
                         // found the color row and disable the color
-                        let coloredRow = document.getElementById(colorId);
+                        const coloredRow = document.getElementById(colorId);
                         coloredRow.style.backgroundColor = "antiquewhite";
                         colorId = -1;
                     }
@@ -59,20 +59,20 @@ require([
                 else {
                     if (colorId != -1) {
                         // found the color row and disable the color
-                        let coloredRow = document.getElementById(colorId);
+                        const coloredRow = document.getElementById(colorId);
                         coloredRow.style.backgroundColor = "antiquewhite";
                     }
                     airplanClicked.graphic.symbol = myClickedPic;
-                    let id = airplanClicked.graphic.attributes.name;
+                    const id = airplanClicked.graphic.attributes.name;
                     colorId = id;
-                    let coloredRow = document.getElementById(colorId);
+                    const coloredRow = document.getElementById(colorId);
                     coloredRow.style.backgroundColor = "red";
                     showFlightDetails(id);
                 }
             });
     });
 
-    var airplanPicture = new PictureMarkerSymbol({
+    const airplanPicture = new PictureMarkerSymbol({
         url: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png",
         width: "50px",
         height: "50px"
@@ -83,15 +83,15 @@ require([
     function drawSegments(segments) {
         let i = 0;
 
-        var polylineGraphic = new Graphic();
+        const polylineGraphic = new Graphic();
         currentPath = polylineGraphic;
-        var simpleLineSymbol = {
+        const simpleLineSymbol = {
             type: "simple-line",
             color: "red",
             width: "2px",
             style: "short-dot"
         };
-        var myPolyline = {
+        const myPolyline = {
             type: "polyline",
             paths: [
             ]
@@ -114,7 +114,7 @@ require([
 
 
     function addPlan(lat, lon, id) {
-        var airplanGraphic = new Graphic();
+        const airplanGraphic = new Graphic();
 
         airplanGraphic.attributes = {
             name: id,
@@ -122,7 +122,7 @@ require([
         airplansDic[airplanGraphic.attributes.name] = airplanGraphic;
         graphicsLayer.add(airplanGraphic);
 
-        var point = {
+        let point = {
             type: "point",
         };
         point.latitude = lat;
@@ -133,8 +133,8 @@ require([
     }
 
     function updatePlan(lat, lon, id) {
-        var apg = airplansDic[id];
-        var point = {
+        let apg = airplansDic[id];
+        let point = {
             type: "point",
         };
         point.latitude = lat;
@@ -143,7 +143,7 @@ require([
     }
 
         function removePlanOnMap(id) {
-            var apg = airplansDic[id];
+            let apg = airplansDic[id];
             graphicsLayer.remove(apg);
             delete airplansDic[id];
         }

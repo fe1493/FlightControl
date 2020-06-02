@@ -1,12 +1,11 @@
-﻿let input = document.getElementById("fileInput");
-let customButton = document.getElementById("customButton");
-let customText = document.getElementById("customText");
-
+﻿const input = document.getElementById("fileInput");
+const customButton = document.getElementById("customButton");
 customButton.addEventListener('click', function () {
     input.click();
 });
 
-let allowedExtension = /(\.json)$/i;
+const allowedExtension = /(\.json)$/i;
+//Event handler which loads and read the file
 function onChange(event) {
     let file = event.target.files[0];
     let filePath = file.name;
@@ -17,10 +16,10 @@ function onChange(event) {
         return false;
     }
     //read the file and send to the function in charge of sending to the server
-    let reader = new FileReader();
-    reader.onload = (event) => {
+    const reader = new FileReader();
+    reader.onload = () => {
         // file content
-        let obj = JSON.parse(reader.result);
+        const obj = JSON.parse(reader.result);
         // ********************  NEED TO DELETE BEFORE SUBMIT !!!!! **************************
         obj.initial_location.date_time = getCurrentTime();
         postflightplan(obj);
@@ -29,6 +28,7 @@ function onChange(event) {
     reader.onerror = error => reject(error);
     reader.readAsText(file);
 }
+
 
 // Function that takes the new flight plan and posts it to the server
 function postflightplan(flightPlan) {
@@ -40,13 +40,13 @@ function postflightplan(flightPlan) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(flightPlan)
-            
-            
+
+
         });
         //if the flight plan locations are invalid
         if (rawResponse.status == 400) {
             errorHandle(rawResponse.status, "Invalid flight plan details");
         }
-        
+
     })();
 }

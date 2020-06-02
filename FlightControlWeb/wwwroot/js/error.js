@@ -3,6 +3,4 @@
 async function errorHandle(errStat, errDta) {
     $("#errMsg").text("Status error: " + errStat + ", " + errDta);
     $("#error").show().delay(2000).fadeOut();
-
-
 }
