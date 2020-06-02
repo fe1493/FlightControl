@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +24,7 @@ namespace FlightControlWeb.Controllers
 
 
 
-        public async Task<List<Flight>> Func(Server servers, string relativeTime)
+        public async Task<List<Flight>> GetFlightsFromRemoteServer(Server servers, string relativeTime)
         {
             HttpRequestClass httpRequestClass = new HttpRequestClass();
             string param = "/api/flights?relative_to=" + relativeTime;
@@ -99,7 +98,7 @@ namespace FlightControlWeb.Controllers
             foreach (var id in serverIdKeysList)
             {
                 Server server = memoryCache.Get(id) as Server;
-                flightsList.AddRange(await Func(server, relativeTime));
+                flightsList.AddRange(await GetFlightsFromRemoteServer(server, relativeTime));
 
                 List<string> flightsKeysList = new List<string>();
                 foreach (var flight in flightsList)
