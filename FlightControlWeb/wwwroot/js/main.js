@@ -11,6 +11,7 @@ function flightsTable() {
         }, 3000);
     }
     catch (err) {
+        console.log(baseURL);
         console.log('flightsTable PROBLEM!' + err.message);
         errorHandle('flightsTable error: ', err.message);
     }
