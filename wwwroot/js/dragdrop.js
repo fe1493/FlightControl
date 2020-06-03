@@ -21,7 +21,7 @@ function onChange(event) {
         // file content
         const obj = JSON.parse(reader.result);
         // ********************  NEED TO DELETE BEFORE SUBMIT !!!!! **************************
-        obj.initial_location.date_time = getCurrentTime();
+       // obj.initial_location.date_time = getCurrentTime();
         postflightplan(obj);
     }
     $("#fileInput").val('');
