@@ -11,9 +11,9 @@
         const initialLocation = data["initial_location"];
         setInitialLocation(initialLocation);
 
-        const date = new Date();
-        date.toUTCString(initialLocation["date_time"]);
-        setDepartureTime(date);
+        const date = new Date(initialLocation["date_time"]);
+
+        setDepartureTime(date.toUTCString());
 
         var flightTime = 0;
         let flightSegments = data["segments"];
@@ -44,10 +44,10 @@ function setDepartureTime(date) {
 }
 
 function setArrivalTime(date, flightTime) {
-    const arrivalDate = new Date();
+    const arrivalDate = date;
     arrivalDate.setSeconds(date.getSeconds() + flightTime);
     const arrivalTime = document.getElementById("arvl");
-    arrivalTime.innerHTML = arrivalDate;
+    arrivalTime.innerHTML = arrivalDate.toUTCString();
 }
 
 function setFinalLocation(finalLocation) {
